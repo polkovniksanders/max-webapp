@@ -1,10 +1,13 @@
 import type { MaxWebApp } from './index'
 
-// Fake user — редактируй как хочешь для разных сценариев
+// Fake user — редактируй для разных сценариев
 const MOCK_USER = {
   id: 123456789,
-  name: 'Dev User',
+  first_name: 'Dev',
+  last_name: 'User',
   username: 'devuser',
+  language_code: 'ru',
+  photo_url: undefined as string | undefined,
 }
 
 const log = (method: string, ...args: unknown[]) => {
@@ -60,13 +63,21 @@ const createMockBackButton = () => {
   }
 }
 
+// Имитируем raw initData строку (как она приходит от MAX)
+const MOCK_INIT_DATA = [
+  `user=${encodeURIComponent(JSON.stringify({ ...MOCK_USER }))}`,
+  `auth_date=${Math.floor(Date.now() / 1000)}`,
+  `query_id=AAHdF6IQAAAAAN0XohDhrOrc`,
+  `ip=192.168.1.1`,
+  `hash=mock_hash_value_for_dev`,
+].join('&')
+
 export const createMockWebApp = (): MaxWebApp => ({
   ready() {
     log('ready — splash hidden (mock)')
   },
   close() {
     log('close — would close mini-app')
-    // В браузере просто показываем сообщение
     console.warn('[MAX Bridge mock] close() called — in MAX this closes the mini-app')
   },
   openLink(url) {
@@ -87,9 +98,18 @@ export const createMockWebApp = (): MaxWebApp => ({
   disableClosingConfirmation() {
     log('disableClosingConfirmation')
   },
+  enableVerticalSwipes() {
+    log('enableVerticalSwipes')
+  },
+  disableVerticalSwipes() {
+    log('disableVerticalSwipes')
+  },
+  requestContact() {
+    log('requestContact')
+    return Promise.resolve({ phone_number: '+7 900 000-00-00' })
+  },
   onEvent(eventName, callback) {
     log('onEvent', eventName)
-    // Можно подписываться на кастомные события через window для теста
     window.addEventListener(`max:${eventName}`, () => callback())
   },
   offEvent(eventName, callback) {
@@ -97,8 +117,14 @@ export const createMockWebApp = (): MaxWebApp => ({
     window.removeEventListener(`max:${eventName}`, () => callback())
   },
   BackButton: createMockBackButton(),
+  initData: MOCK_INIT_DATA,
   initDataUnsafe: {
     user: MOCK_USER,
+    hash: 'mock_hash_value_for_dev',
+    ip: '192.168.1.1',
+    query_id: 'AAHdF6IQAAAAAN0XohDhrOrc',
+    auth_date: Math.floor(Date.now() / 1000),
   },
+  platform: 'mock-web',
   version: 'mock-1.0.0',
 })

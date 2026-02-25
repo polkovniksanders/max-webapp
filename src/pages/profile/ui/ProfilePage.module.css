@@ -1,27 +1,38 @@
 .page {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  padding: 24px 16px;
+  padding: 0 0 32px;
 }
 
 .title {
-  font-size: 28px;
+  font-size: 20px;
   font-weight: 700;
   margin: 0;
+  padding: 16px 16px 8px;
   color: var(--max-color-text-primary, #000);
+  position: sticky;
+  top: 0;
+  background: var(--max-color-bg-primary, #fff);
+  z-index: 10;
+  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
 }
 
-.card {
+/* User card */
+.userCard {
   display: flex;
   align-items: center;
-  gap: 16px;
-  background: var(--max-color-bg-secondary, #f5f5f5);
-  border-radius: 12px;
+  gap: 14px;
   padding: 16px;
+  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
 }
 
 .avatar {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.avatarPlaceholder {
   width: 56px;
   height: 56px;
   border-radius: 50%;
@@ -35,45 +46,154 @@
   flex-shrink: 0;
 }
 
-.info {
+.userInfo {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
-.name {
-  font-size: 16px;
-  font-weight: 600;
-  margin: 0;
+.userName {
+  font-size: 17px;
+  font-weight: 700;
   color: var(--max-color-text-primary, #000);
 }
 
-.username {
+.userHandle {
   font-size: 14px;
-  margin: 0;
   color: var(--max-color-accent, #2688eb);
 }
 
-.id {
+.userId {
   font-size: 12px;
-  margin: 0;
   color: var(--max-color-text-secondary, #888);
+  font-family: 'SF Mono', 'Fira Code', monospace;
 }
 
-.hint {
+/* Sections */
+.section {
+  padding: 12px 16px 0;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--max-color-text-secondary, #888);
+  margin-bottom: 6px;
+}
+
+/* Info list */
+.infoList {
+  background: var(--max-color-bg-secondary, #f5f5f5);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
+}
+
+.row:last-child {
+  border-bottom: none;
+}
+
+.rowLabel {
   font-size: 14px;
   color: var(--max-color-text-secondary, #888);
-  margin: 0;
+  flex-shrink: 0;
 }
 
+.rowValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--max-color-text-primary, #000);
+  text-align: right;
+  word-break: break-all;
+}
+
+.mono {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 13px;
+}
+
+.truncate {
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-break: normal;
+}
+
+/* Raw initData block */
+.rawBlock {
+  background: var(--max-color-bg-secondary, #f5f5f5);
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 8px;
+}
+
+.rawLabel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--max-color-text-secondary, #888);
+}
+
+.copyBtn {
+  background: none;
+  border: none;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--max-color-accent, #2688eb);
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.copyBtn:hover {
+  background: var(--max-color-bg-tertiary, #ebebeb);
+}
+
+.rawValue {
+  font-family: 'SF Mono', 'Fira Code', 'Consolas', monospace;
+  font-size: 11px;
+  color: var(--max-color-text-secondary, #888);
+  padding: 10px 14px;
+  margin: 0;
+  white-space: pre-wrap;
+  word-break: break-all;
+  max-height: 120px;
+  overflow-y: auto;
+}
+
+/* Close button */
 .closeBtn {
-  margin-top: 8px;
-  padding: 12px;
-  border-radius: 10px;
+  margin: 20px 16px 0;
+  width: calc(100% - 32px);
+  padding: 14px;
+  border-radius: 12px;
   border: none;
   background: var(--max-color-destructive, #e53935);
   color: #fff;
-  font-size: 16px;
-  font-weight: 500;
+  font-size: 15px;
+  font-weight: 600;
   cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.closeBtn:hover {
+  opacity: 0.88;
 }

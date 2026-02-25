@@ -1,28 +1,70 @@
 // Типизация глобального объекта window.WebApp от MAX Bridge
+// Поля получены из исходника https://st.max.ru/js/max-web-app.js
+
+export interface MaxUser {
+  id: number
+  first_name?: string
+  last_name?: string
+  username?: string
+  language_code?: string
+  photo_url?: string
+}
+
+export interface MaxChat {
+  id: number | string
+  type?: string
+}
+
+export interface MaxInitDataUnsafe {
+  user?: MaxUser
+  chat?: MaxChat
+  hash?: string
+  ip?: string
+  query_id?: string
+  start_param?: string
+  auth_date?: number
+}
+
 export interface MaxWebApp {
+  // Жизненный цикл
   ready: () => void
   close: () => void
+
+  // Навигация и ссылки
   openLink: (url: string) => void
   openMaxLink: (url: string) => void
+
+  // Шаринг
   shareContent: (text: string, link?: string) => void
+
+  // Поведение
   enableClosingConfirmation: () => void
   disableClosingConfirmation: () => void
+  enableVerticalSwipes: () => void
+  disableVerticalSwipes: () => void
+
+  // Контакт
+  requestContact: () => Promise<unknown>
+
+  // События
   onEvent: (eventName: string, callback: (...args: unknown[]) => void) => void
   offEvent: (eventName: string, callback: (...args: unknown[]) => void) => void
+
+  // BackButton
   BackButton: {
     show: () => void
     hide: () => void
     onClick: (callback: () => void) => void
     offClick: (callback: () => void) => void
+    isVisible?: boolean
   }
-  initDataUnsafe?: {
-    user?: {
-      id: number
-      name?: string
-      username?: string
-    }
-    chat?: unknown
-  }
+
+  // Данные инициализации
+  initData?: string               // raw URL-encoded init data string
+  initDataUnsafe?: MaxInitDataUnsafe
+
+  // Платформа и версия
+  platform?: string | null
   version?: string
 }
 
