@@ -1,4 +1,4 @@
-import { Routes, Route } from 'react-router-dom'
+import { Routes, Route, Navigate } from 'react-router-dom'
 import { MainPage } from '@pages/main'
 import { ProfilePage } from '@pages/profile'
 import { ShopMainPage } from '@pages/shop'
@@ -16,6 +16,7 @@ export const AppRouter = () => {
       <Route path={ROUTES.PRODUCT} element={<ProductPage />} />
       <Route path={ROUTES.CATEGORIES} element={<CategoriesPage />} />
       <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+      <Route path="*" element={<Navigate to={ROUTES.MAIN} replace />} />
     </Routes>
   )
 }
