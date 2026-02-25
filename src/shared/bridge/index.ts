@@ -32,7 +32,17 @@ declare global {
   }
 }
 
-// Возвращает WebApp если доступен (внутри MAX), иначе null
+// В dev-режиме подставляем mock если реального WebApp нет (т.е. открыли в браузере)
+if (import.meta.env.DEV && !window.WebApp) {
+  const { createMockWebApp } = await import('./mock')
+  window.WebApp = createMockWebApp()
+  console.info(
+    '%c[MAX Bridge] DEV MODE — window.WebApp заменён mock-объектом',
+    'background:#1a73e8;color:#fff;padding:2px 6px;border-radius:3px',
+  )
+}
+
+// Возвращает WebApp если доступен (внутри MAX или mock в dev), иначе null
 export const getWebApp = (): MaxWebApp | null => window.WebApp ?? null
 
 // Сигналим MAX, что приложение готово к отображению
