@@ -1,5 +1,7 @@
 import { useEffect } from 'react'
 import { HashRouter } from 'react-router-dom'
+import { Provider } from 'react-redux'
+import { store } from './store'
 import { notifyReady } from '@shared/bridge'
 import { Navbar } from '@widgets/navbar'
 import { AppRouter } from './router'
@@ -15,11 +17,13 @@ export const App = () => {
   }, [])
 
   return (
-    <HashRouter>
-      <main style={{ flex: 1, overflowY: 'auto' }}>
-        <AppRouter />
-      </main>
-      <Navbar />
-    </HashRouter>
+    <Provider store={store}>
+      <HashRouter>
+        <main style={{ flex: 1, overflowY: 'auto' }}>
+          <AppRouter />
+        </main>
+        <Navbar />
+      </HashRouter>
+    </Provider>
   )
 }
