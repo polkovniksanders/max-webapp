@@ -4,6 +4,8 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
+  // base нужен для GitHub Pages — совпадает с именем репозитория
+  base: '/max-webapp/',
   resolve: {
     alias: {
       '@app': resolve(__dirname, 'src/app'),
