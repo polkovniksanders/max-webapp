@@ -1,4 +1,5 @@
 import { useGetCategoriesQuery } from '@entities/category'
+import { PageHeader } from '@shared/ui'
 import styles from './CategoriesPage.module.css'
 
 export const CategoriesPage = () => {
@@ -6,9 +7,7 @@ export const CategoriesPage = () => {
 
   return (
     <div className={styles.page}>
-      <div className={styles.header}>
-        <h1 className={styles.title}>Категории</h1>
-      </div>
+      <PageHeader title="Каталог" />
 
       {isLoading && (
         <div className={styles.stateWrap}>

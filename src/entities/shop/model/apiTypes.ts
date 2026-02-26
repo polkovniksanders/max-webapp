@@ -16,6 +16,59 @@ export interface ApiShopLegalInfo {
   additionally: string | null
 }
 
+export interface ShopStyleColor {
+  hex: string
+}
+
+export interface ShopStyleGradient {
+  hex: string
+  hexPrimary: string
+  hexSecondary: string
+}
+
+export interface ShopStyleFont {
+  name: string
+  family: string
+  link: string
+}
+
+export interface ShopStyleBorderRadius {
+  roundingZero: number
+  roundingSmall: number
+  roundingMedium: number
+  roundingLarge: number
+  roundingHalf: number
+  roundingFull: number
+  roundingInfinite: number
+}
+
+export interface ShopStyle {
+  menuColor: ShopStyleGradient
+  borderGradient: ShopStyleGradient
+  primaryGradient: ShopStyleGradient
+  colorPrimary: ShopStyleColor
+  colorCaption: ShopStyleColor
+  colorStatus: ShopStyleColor
+  colorButtonSecondary: ShopStyleColor
+  colorText: ShopStyleColor
+  colorTextSecondary: ShopStyleColor
+  borderColor: ShopStyleColor
+  borderColorSecondary: ShopStyleColor
+  backgroundSecondary: ShopStyleColor
+  backgroundLayout: ShopStyleColor
+  colorSuccess: ShopStyleColor
+  colorBackgroundSuccess: ShopStyleColor
+  colorBackgroundSuccessSecondary: ShopStyleColor
+  colorError: ShopStyleColor
+  colorBackgroundError: ShopStyleColor
+  colorBackgroundSecondary: ShopStyleColor
+  font: {
+    primary: ShopStyleFont
+    secondary: ShopStyleFont
+  }
+  borderRadius: ShopStyleBorderRadius
+}
+
 export interface ApiShopDetails {
   contact_info?: string | null
   style?: string | null

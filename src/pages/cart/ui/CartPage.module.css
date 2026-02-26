@@ -1,0 +1,12 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+}
+
+.empty {
+  color: #888;
+  font-size: 15px;
+  text-align: center;
+  margin-top: 60px;
+}

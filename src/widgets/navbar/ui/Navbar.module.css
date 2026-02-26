@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
   padding: 8px 8px 12px;
-  background: var(--max-color-bg-secondary, #f5f5f5);
-  border-top: 1px solid var(--max-color-separator, #e0e0e0);
+  background: #fff;
+  border-top: 1px solid #e0e0e0;
 }
 
 .link {
@@ -14,17 +14,13 @@
   gap: 3px;
   padding: 6px 8px;
   border-radius: 10px;
-  color: var(--max-color-text-secondary, #888);
+  color: #888;
   text-decoration: none;
-  transition: background 0.15s, color 0.15s;
-}
-
-.link:hover {
-  background: var(--max-color-bg-tertiary, #ebebeb);
+  transition: color 0.15s;
 }
 
 .active {
-  color: var(--max-color-accent, #2688eb);
+  color: var(--color-primary, #7C5CBF);
 }
 
 .label {
@@ -33,14 +29,24 @@
   line-height: 1;
 }
 
+.cartIcon {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .badge {
-  background: var(--max-color-accent, #2688eb);
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: var(--color-primary, #7C5CBF);
   color: #fff;
   border-radius: 10px;
   font-size: 10px;
   font-weight: 700;
-  min-width: 18px;
-  height: 18px;
+  min-width: 17px;
+  height: 17px;
   display: flex;
   align-items: center;
   justify-content: center;

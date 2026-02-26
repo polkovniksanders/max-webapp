@@ -5,6 +5,7 @@ import { route as shopDetailRoute } from '@pages/shop-detail'
 import { route as productRoute } from '@pages/product'
 import { route as categoriesRoute } from '@pages/categories'
 import { route as profileRoute } from '@pages/profile'
+import { route as cartRoute } from '@pages/cart'
 import { ROUTES } from '@shared/config/routes'
 
 const pageRoutes = [
@@ -14,6 +15,7 @@ const pageRoutes = [
   productRoute,
   categoriesRoute,
   profileRoute,
+  cartRoute,
 ]
 
 export const AppRouter = () => {

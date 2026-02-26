@@ -104,7 +104,6 @@ export const MainPage = () => {
                     )}
                   </div>
                   <div className={styles.cardBody}>
-                    <p className={styles.cardTitle}>{product.title}</p>
                     <div className={styles.priceRow}>
                       <span className={styles.price}>
                         {product.price.toLocaleString('ru-RU')} ₽
@@ -115,6 +114,13 @@ export const MainPage = () => {
                         </span>
                       )}
                     </div>
+                    <p className={styles.cardTitle}>{product.title}</p>
+                    <button
+                      className={styles.addToCartBtn}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      В корзину
+                    </button>
                   </div>
                 </div>
               ))}

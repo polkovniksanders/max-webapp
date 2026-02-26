@@ -4,23 +4,6 @@
   min-height: 100%;
 }
 
-/* Header */
-.header {
-  padding: 16px 16px 8px;
-  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
-  background: var(--max-color-bg-primary, #fff);
-  position: sticky;
-  top: 0;
-  z-index: 10;
-}
-
-.title {
-  margin: 0;
-  font-size: 20px;
-  font-weight: 700;
-  color: var(--max-color-text-primary, #000);
-}
-
 /* State */
 .stateWrap {
   flex: 1;
