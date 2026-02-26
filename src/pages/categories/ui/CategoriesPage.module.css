@@ -4,84 +4,23 @@
   min-height: 100%;
 }
 
-/* State */
-.stateWrap {
-  flex: 1;
+.center {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  gap: 12px;
-  padding: 48px 24px;
+  padding: 48px 0;
 }
 
-.stateText {
-  font-size: 14px;
-  color: var(--max-color-text-secondary, #888);
-}
-
-/* Spinner */
-@keyframes spin {
-  to { transform: rotate(360deg); }
-}
-
-.spinner {
-  width: 36px;
-  height: 36px;
-  border: 3px solid var(--max-color-bg-tertiary, #ebebeb);
-  border-top-color: var(--max-color-accent, #2688eb);
-  border-radius: 50%;
-  animation: spin 0.7s linear infinite;
-}
-
-/* Error */
-.errorIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--max-color-destructive, #e53935);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.retryBtn {
-  padding: 10px 20px;
-  border-radius: 10px;
-  border: none;
-  background: var(--max-color-accent, #2688eb);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  margin-top: 4px;
-  transition: opacity 0.15s;
-}
-
-.retryBtn:hover {
-  opacity: 0.85;
-}
-
-/* List */
 .list {
   list-style: none;
   margin: 0;
   padding: 8px 0;
 }
 
-/* Item */
 .item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
   padding: 12px 16px;
+  border-bottom: 1px solid var(--border-color, #e0e0e0);
   cursor: pointer;
   transition: background 0.12s;
-  border-bottom: 1px solid var(--max-color-separator, #e0e0e0);
 }
 
 .item:last-child {
@@ -89,58 +28,11 @@
 }
 
 .item:hover {
-  background: var(--max-color-bg-secondary, #f5f5f5);
-}
-
-.itemLeft {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  min-width: 0;
-}
-
-.itemImg {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  object-fit: cover;
-  flex-shrink: 0;
-}
-
-.itemImgPlaceholder {
-  width: 44px;
-  height: 44px;
-  border-radius: 10px;
-  background: var(--max-color-accent, #2688eb);
-  color: #fff;
-  font-size: 20px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-}
-
-.itemInfo {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-  min-width: 0;
+  background: var(--bg-secondary, #f5f5f5);
 }
 
 .itemName {
   font-size: 15px;
   font-weight: 500;
-  color: var(--max-color-text-primary, #000);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.itemDesc {
-  font-size: 12px;
-  color: var(--max-color-text-secondary, #888);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  color: var(--color-text, #000);
 }

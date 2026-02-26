@@ -2,9 +2,10 @@ import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useGetCategoriesQuery } from '@entities/category'
 import type { ApiCategory } from '@entities/category'
-import { useLazyGetCategoryProductsQuery, buildImageUrl } from '@entities/product'
+import { useLazyGetCategoryProductsQuery, ProductCard } from '@entities/product'
 import type { ApiProduct } from '@entities/product'
 import { useGetShopQuery } from '@entities/shop'
+import { Spinner } from '@shared/ui'
 import { useOnScreen } from '@shared/hooks/useOnScreen'
 import { ROUTES } from '@shared/config/routes'
 import styles from './MainPage.module.css'
@@ -21,12 +22,10 @@ export const MainPage = () => {
   const [list, setList] = useState<CategoryRow[]>([])
   const listRef = useRef<CategoryRow[]>([])
 
-  // Синхронизируем ref с state чтобы избежать stale closure в эффекте скролла
   useEffect(() => {
     listRef.current = list
   }, [list])
 
-  // Инициализируем список когда категории загрузились
   useEffect(() => {
     if (categories && categories.length > 0) {
       setList(categories.map((cat) => ({ ...cat })))
@@ -35,7 +34,6 @@ export const MainPage = () => {
 
   const { isOnScreen, targetRef } = useOnScreen()
 
-  // Загружаем товары следующей незагруженной категории когда сентинел видим
   useEffect(() => {
     if (isFetching || !isOnScreen) return
 
@@ -65,7 +63,7 @@ export const MainPage = () => {
       <div className={styles.page}>
         <ShopHeader shop={shop} onInfoClick={() => navigate(ROUTES.SHOP_DETAIL)} />
         <div className={styles.centerState}>
-          <div className={styles.spinner} />
+          <Spinner />
         </div>
       </div>
     )
@@ -84,55 +82,20 @@ export const MainPage = () => {
             </div>
             <div className={styles.grid}>
               {category.products.map((product) => (
-                <div
+                <ProductCard
                   key={product.id}
-                  className={styles.card}
+                  product={product}
                   onClick={() => handleProductClick(product)}
-                >
-                  <div className={styles.cardImg}>
-                    {product.images[0]?.file ? (
-                      <img
-                        src={buildImageUrl(product.images[0].file)}
-                        alt={product.title}
-                        className={styles.img}
-                      />
-                    ) : (
-                      <div className={styles.imgPlaceholder} />
-                    )}
-                    {product.discount > 0 && (
-                      <span className={styles.discountBadge}>–{product.discount}%</span>
-                    )}
-                  </div>
-                  <div className={styles.cardBody}>
-                    <div className={styles.priceRow}>
-                      <span className={styles.price}>
-                        {product.price.toLocaleString('ru-RU')} ₽
-                      </span>
-                      {product.old_price && (
-                        <span className={styles.oldPrice}>
-                          {product.old_price.toLocaleString('ru-RU')} ₽
-                        </span>
-                      )}
-                    </div>
-                    <p className={styles.cardTitle}>{product.title}</p>
-                    <button
-                      className={styles.addToCartBtn}
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      В корзину
-                    </button>
-                  </div>
-                </div>
+                />
               ))}
             </div>
           </section>
         )
       })}
 
-      {/* Сентинел: виден пока есть незагруженные категории */}
       {hasMore && (
         <div ref={targetRef} className={styles.sentinel}>
-          <div className={styles.spinner} />
+          <Spinner />
         </div>
       )}
 
@@ -143,7 +106,7 @@ export const MainPage = () => {
   )
 }
 
-// ─── ShopHeader ──────────────────────────────────────────────────────────────
+// ─── ShopHeader ───────────────────────────────────────────────────────────────
 
 interface ShopHeaderProps {
   shop?: { name: string; photo: string | null } | null

@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
 import { useGetProductQuery, buildImageUrl } from '@entities/product'
 import { useBackButton } from '@shared/hooks/useBackButton'
+import { SkeletonBlock, SkeletonLine } from '@shared/ui'
 import styles from './ProductPage.module.css'
 
 export const ProductPage = () => {
@@ -19,13 +20,13 @@ export const ProductPage = () => {
   if (isLoading) {
     return (
       <div className={styles.page}>
-        <div className={styles.skeletonImage} />
+        <SkeletonBlock />
         <div className={styles.content}>
-          <div className={styles.skeletonTitle} />
-          <div className={styles.skeletonPrice} />
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonLineShort} />
+          <SkeletonLine width="75%" height={28} />
+          <SkeletonLine width="40%" height={36} />
+          <SkeletonLine />
+          <SkeletonLine />
+          <SkeletonLine width="60%" />
         </div>
       </div>
     )

@@ -1,5 +1,6 @@
 import { useGetShopQuery } from '@entities/shop'
 import { useBackButton } from '@shared/hooks/useBackButton'
+import { ErrorState, SkeletonBlock, SkeletonLine } from '@shared/ui'
 import styles from './ShopDetailPage.module.css'
 
 export const ShopDetailPage = () => {
@@ -10,12 +11,14 @@ export const ShopDetailPage = () => {
   if (isLoading) {
     return (
       <div className={styles.page}>
-        <div className={styles.skeletonImage} />
+        <div className={styles.imageWrap}>
+          <SkeletonBlock aspectRatio="1/1" borderRadius="var(--radius-large, 16px)" />
+        </div>
         <div className={styles.content}>
-          <div className={styles.skeletonTitle} />
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonLine} />
-          <div className={styles.skeletonLineShort} />
+          <SkeletonLine width="60%" height={28} />
+          <SkeletonLine />
+          <SkeletonLine />
+          <SkeletonLine width="70%" />
         </div>
       </div>
     )
@@ -24,11 +27,7 @@ export const ShopDetailPage = () => {
   if (isError) {
     return (
       <div className={styles.page}>
-        <div className={styles.stateWrap}>
-          <div className={styles.errorIcon}>!</div>
-          <span className={styles.stateText}>Не удалось загрузить информацию о магазине</span>
-          <button className={styles.retryBtn} onClick={refetch}>Повторить</button>
-        </div>
+        <ErrorState message="Не удалось загрузить информацию о магазине" onRetry={refetch} />
       </div>
     )
   }

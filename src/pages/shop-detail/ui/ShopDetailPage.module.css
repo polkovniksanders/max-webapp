@@ -3,7 +3,6 @@
   flex-direction: column;
 }
 
-/* Image */
 .imageWrap {
   padding: 16px 16px 0;
 }
@@ -33,7 +32,6 @@
   font-family: var(--font-primary, sans-serif);
 }
 
-/* Content */
 .content {
   padding: 16px;
   display: flex;
@@ -56,76 +54,4 @@
   line-height: 1.55;
   color: var(--color-text-secondary, #888);
   white-space: pre-line;
-}
-
-/* Skeleton */
-.skeletonImage {
-  margin: 16px 16px 0;
-  aspect-ratio: 1 / 1;
-  border-radius: var(--radius-large, 16px);
-  background: #ebebeb;
-}
-
-.skeletonTitle {
-  height: 28px;
-  border-radius: 6px;
-  background: #ebebeb;
-  width: 60%;
-}
-
-.skeletonLine {
-  height: 16px;
-  border-radius: 4px;
-  background: #ebebeb;
-}
-
-.skeletonLineShort {
-  height: 16px;
-  border-radius: 4px;
-  background: #ebebeb;
-  width: 70%;
-}
-
-/* Error */
-.stateWrap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 12px;
-  padding: 60px 24px;
-}
-
-.stateText {
-  font-size: 14px;
-  color: var(--color-text-secondary, #888);
-  text-align: center;
-}
-
-.errorIcon {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  background: var(--color-error, #e53935);
-  color: #fff;
-  font-size: 22px;
-  font-weight: 700;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.retryBtn {
-  padding: 10px 20px;
-  border-radius: var(--radius-small, 10px);
-  border: none;
-  background: var(--color-primary, #976BF6);
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: opacity 0.15s;
-}
-
-.retryBtn:hover {
-  opacity: 0.85;
 }
