@@ -1,13 +1,12 @@
 import { createSlice } from '@reduxjs/toolkit'
 import type { Shop } from './types'
-import { MOCK_SHOP } from '@shared/mocks/shop'
 
 interface ShopState {
   shop: Shop
 }
 
 const initialState: ShopState = {
-  shop: MOCK_SHOP,
+  shop: { id: 0, name: '', description: '', bannerImage: '' },
 }
 
 const shopSlice = createSlice({

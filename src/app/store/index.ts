@@ -1,25 +1,18 @@
 import { configureStore } from '@reduxjs/toolkit'
-import { productReducer, productsApi } from '@entities/product'
-import { cartReducer } from '@entities/cart'
-import { shopReducer, shopApi } from '@entities/shop'
-import { categoriesApi } from '@entities/category'
+import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux'
+import { shopReducer } from '@entities/shop'
+import { baseApi } from '@shared/api'
 
 export const store = configureStore({
   reducer: {
-    product: productReducer,
-    cart: cartReducer,
     shop: shopReducer,
-    [categoriesApi.reducerPath]: categoriesApi.reducer,
-    [productsApi.reducerPath]: productsApi.reducer,
-    [shopApi.reducerPath]: shopApi.reducer,
+    [baseApi.reducerPath]: baseApi.reducer,
   },
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat(
-      categoriesApi.middleware,
-      productsApi.middleware,
-      shopApi.middleware,
-    ),
+  middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>
 export type AppDispatch = typeof store.dispatch
+
+export const useAppDispatch = () => useDispatch<AppDispatch>()
+export const useAppSelector: TypedUseSelectorHook<RootState> = useSelector

@@ -116,6 +116,14 @@
   margin: 0;
 }
 
+.description p {
+  margin: 0 0 8px;
+}
+
+.description p:last-child {
+  margin-bottom: 0;
+}
+
 /* Attributes */
 .attrs {
   background: var(--max-color-bg-secondary, #f5f5f5);
@@ -156,68 +164,55 @@
   text-align: right;
 }
 
-/* Bottom bar */
-.bottomBar {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 16px;
-  background: var(--max-color-bg-primary, #fff);
-  border-top: 1px solid var(--max-color-separator, #e0e0e0);
-  z-index: 20;
+/* Skeleton */
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
 }
 
-.addBtn {
+.skeletonImage {
   width: 100%;
-  padding: 14px;
-  border-radius: 12px;
-  border: none;
-  background: var(--max-color-accent, #2688eb);
-  color: #fff;
-  font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.15s;
+  aspect-ratio: 1;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
 }
 
-.addBtn:hover {
-  opacity: 0.88;
+.skeletonTitle {
+  height: 28px;
+  width: 75%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 16px;
 }
 
-/* Counter */
-.counter {
-  display: flex;
-  align-items: center;
-  gap: 8px;
+.skeletonPrice {
+  height: 36px;
+  width: 40%;
+  border-radius: 6px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 24px;
 }
 
-.counterBtn {
-  width: 44px;
-  height: 44px;
-  border-radius: 12px;
-  border: none;
-  background: var(--max-color-bg-secondary, #f5f5f5);
-  color: var(--max-color-accent, #2688eb);
-  font-size: 22px;
-  font-weight: 700;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  line-height: 1;
-  transition: background 0.15s;
-  flex-shrink: 0;
+.skeletonLine {
+  height: 16px;
+  width: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 10px;
 }
 
-.counterBtn:hover {
-  background: var(--max-color-bg-tertiary, #ebebeb);
-}
-
-.counterVal {
-  flex: 1;
-  text-align: center;
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--max-color-text-primary, #000);
+.skeletonLineShort {
+  height: 16px;
+  width: 60%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
 }

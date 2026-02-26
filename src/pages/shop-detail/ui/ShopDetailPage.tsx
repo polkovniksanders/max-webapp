@@ -1,30 +1,14 @@
-import { useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useGetShopQuery } from '@entities/shop'
-import { getWebApp } from '@shared/bridge'
+import { useBackButton } from '@shared/hooks/useBackButton'
 import styles from './ShopDetailPage.module.css'
 
 export const ShopDetailPage = () => {
-  const navigate = useNavigate()
   const { data: shop, isLoading, isError, refetch } = useGetShopQuery()
 
-  useEffect(() => {
-    const webApp = getWebApp()
-    webApp?.BackButton.show()
-    const handler = () => navigate(-1)
-    webApp?.BackButton.onClick(handler)
-    return () => {
-      webApp?.BackButton.hide()
-      webApp?.BackButton.offClick(handler)
-    }
-  }, [navigate])
+  useBackButton()
 
   return (
     <div className={styles.page}>
-      <button className={styles.backBtn} onClick={() => navigate(-1)}>
-        <ChevronLeft /> Назад
-      </button>
-
       {isLoading && (
         <div className={styles.stateWrap}>
           <div className={styles.spinner} />
@@ -174,9 +158,3 @@ export const ShopDetailPage = () => {
     </div>
   )
 }
-
-const ChevronLeft = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-    <polyline points="15 18 9 12 15 6" />
-  </svg>
-)

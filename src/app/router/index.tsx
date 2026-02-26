@@ -1,21 +1,27 @@
 import { Routes, Route, Navigate } from 'react-router-dom'
-import { MainPage } from '@pages/main'
-import { ProfilePage } from '@pages/profile'
-import { ShopMainPage } from '@pages/shop'
-import { ShopDetailPage } from '@pages/shop-detail'
-import { ProductPage } from '@pages/product'
-import { CategoriesPage } from '@pages/categories'
+import { route as mainRoute } from '@pages/main'
+import { route as shopRoute } from '@pages/shop'
+import { route as shopDetailRoute } from '@pages/shop-detail'
+import { route as productRoute } from '@pages/product'
+import { route as categoriesRoute } from '@pages/categories'
+import { route as profileRoute } from '@pages/profile'
 import { ROUTES } from '@shared/config/routes'
+
+const pageRoutes = [
+  mainRoute,
+  shopRoute,
+  shopDetailRoute,
+  productRoute,
+  categoriesRoute,
+  profileRoute,
+]
 
 export const AppRouter = () => {
   return (
     <Routes>
-      <Route path={ROUTES.MAIN} element={<MainPage />} />
-      <Route path={ROUTES.SHOP} element={<ShopMainPage />} />
-      <Route path={ROUTES.SHOP_DETAIL} element={<ShopDetailPage />} />
-      <Route path={ROUTES.PRODUCT} element={<ProductPage />} />
-      <Route path={ROUTES.CATEGORIES} element={<CategoriesPage />} />
-      <Route path={ROUTES.PROFILE} element={<ProfilePage />} />
+      {pageRoutes.map(({ path, element }) => (
+        <Route key={path} path={path} element={element} />
+      ))}
       <Route path="*" element={<Navigate to={ROUTES.MAIN} replace />} />
     </Routes>
   )

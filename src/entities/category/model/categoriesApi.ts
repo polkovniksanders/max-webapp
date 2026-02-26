@@ -1,12 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react'
+import { baseApi } from '@shared/api'
 import type { ApiCategory } from './types'
 
 const SHOP_ID = 12
 const TELEGRAM_USER_ID = 5492444
 
-export const categoriesApi = createApi({
-  reducerPath: 'categoriesApi',
-  baseQuery: fetchBaseQuery({ baseUrl: 'https://api.spodial.com/api/v3/' }),
+export const { useGetCategoriesQuery } = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getCategories: builder.query<ApiCategory[], void>({
       query: () =>
@@ -15,5 +13,3 @@ export const categoriesApi = createApi({
     }),
   }),
 })
-
-export const { useGetCategoriesQuery } = categoriesApi

@@ -5,18 +5,6 @@ export interface Category {
   label: string
 }
 
-export interface Product {
-  id: number
-  title: string
-  description: string
-  price: number
-  oldPrice: number | null
-  discount: number
-  categoryId: Exclude<CategoryId, 'all'>
-  image: string
-  attributes: Record<string, string>
-}
-
 export const CATEGORIES: Category[] = [
   { id: 'all', label: 'Все' },
   { id: 'electronics', label: 'Электроника' },

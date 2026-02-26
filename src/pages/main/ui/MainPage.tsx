@@ -1,9 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
 import { useGetCategoriesQuery } from '@entities/category'
 import type { ApiCategory } from '@entities/category'
-import { useLazyGetCategoryProductsQuery, buildImageUrl, setSelectedProduct } from '@entities/product'
+import { useLazyGetCategoryProductsQuery, buildImageUrl } from '@entities/product'
 import type { ApiProduct } from '@entities/product'
 import { useGetShopQuery } from '@entities/shop'
 import { useOnScreen } from '@shared/hooks/useOnScreen'
@@ -14,7 +13,6 @@ type CategoryRow = ApiCategory & { products?: ApiProduct[] }
 
 export const MainPage = () => {
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const { data: shop } = useGetShopQuery()
   const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
@@ -56,17 +54,6 @@ export const MainPage = () => {
   }, [isOnScreen, isFetching, fetchProducts])
 
   const handleProductClick = (product: ApiProduct) => {
-    dispatch(setSelectedProduct({
-      id: product.id,
-      title: product.title,
-      description: product.description ?? '',
-      price: product.price,
-      oldPrice: product.old_price,
-      discount: product.discount,
-      categoryId: 'other',
-      image: buildImageUrl(product.images[0]?.file),
-      attributes: {},
-    }))
     navigate(ROUTES.PRODUCT.replace(':id', String(product.id)))
   }
 
