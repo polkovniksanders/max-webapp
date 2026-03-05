@@ -1,10 +1,11 @@
 import { useEffect } from 'react'
 import { useGetShopQuery } from './shopApi'
 import { applyShopStyle } from '../lib/applyShopStyle'
+import { getShopId } from '@shared/config/shopId'
 import type { ShopStyle } from './apiTypes'
 
 export const useShopStyle = () => {
-  const { data: shop } = useGetShopQuery()
+  const { data: shop } = useGetShopQuery(getShopId())
 
   useEffect(() => {
     if (!shop?.details?.style) return

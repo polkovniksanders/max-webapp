@@ -1,10 +1,11 @@
 import { useGetShopQuery } from '@entities/shop'
 import { useBackButton } from '@shared/hooks/useBackButton'
 import { ErrorState, SkeletonBlock, SkeletonLine } from '@shared/ui'
+import { getShopId } from '@shared/config/shopId'
 import styles from './ShopDetailPage.module.css'
 
 export const ShopDetailPage = () => {
-  const { data: shop, isLoading, isError, refetch } = useGetShopQuery()
+  const { data: shop, isLoading, isError, refetch } = useGetShopQuery(getShopId())
 
   useBackButton()
 

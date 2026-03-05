@@ -1,11 +1,13 @@
 import { configureStore } from '@reduxjs/toolkit'
 import { useDispatch, useSelector, type TypedUseSelectorHook } from 'react-redux'
 import { shopReducer } from '@entities/shop'
+import { cartReducer } from '@entities/cart'
 import { baseApi } from '@shared/api'
 
 export const store = configureStore({
   reducer: {
     shop: shopReducer,
+    cart: cartReducer,
     [baseApi.reducerPath]: baseApi.reducer,
   },
   middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),

@@ -8,6 +8,7 @@ import { useGetShopQuery } from '@entities/shop'
 import { Spinner } from '@shared/ui'
 import { useOnScreen } from '@shared/hooks/useOnScreen'
 import { ROUTES } from '@shared/config/routes'
+import { getShopId } from '@shared/config/shopId'
 import styles from './MainPage.module.css'
 
 type CategoryRow = ApiCategory & { products?: ApiProduct[] }
@@ -15,7 +16,7 @@ type CategoryRow = ApiCategory & { products?: ApiProduct[] }
 export const MainPage = () => {
   const navigate = useNavigate()
 
-  const { data: shop } = useGetShopQuery()
+  const { data: shop } = useGetShopQuery(getShopId())
   const { data: categories, isLoading: isCategoriesLoading } = useGetCategoriesQuery()
   const [fetchProducts, { isFetching }] = useLazyGetCategoryProductsQuery()
 
