@@ -6,9 +6,9 @@
 .shopHeader {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   width: 100%;
-  padding: 10px 16px;
+  padding: 12px 16px;
   background: var(--bg-layout, #fff);
   border: none;
   border-bottom: 1px solid var(--border-color, #e0e0e0);
@@ -25,20 +25,20 @@
 }
 
 .shopPhoto {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   object-fit: cover;
   flex-shrink: 0;
 }
 
 .shopPhotoPlaceholder {
-  width: 36px;
-  height: 36px;
-  border-radius: 10px;
+  width: 56px;
+  height: 56px;
+  border-radius: 14px;
   background: var(--color-primary, #976BF6);
   color: #fff;
-  font-size: 18px;
+  font-size: 24px;
   font-weight: 700;
   display: flex;
   align-items: center;
@@ -48,8 +48,8 @@
 
 .shopName {
   flex: 1;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 20px;
+  font-weight: 700;
   color: var(--color-text, #000);
   white-space: nowrap;
   overflow: hidden;
@@ -62,7 +62,7 @@
 }
 
 .shopHeaderSkeleton {
-  height: 56px;
+  height: 76px;
   background: var(--bg-secondary, #f5f5f5);
   border-bottom: 1px solid var(--border-color, #e0e0e0);
   position: sticky;

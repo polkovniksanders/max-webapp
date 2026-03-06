@@ -153,7 +153,7 @@
 }
 
 .cartBtn {
-  width: 100%;
+  flex: 1;
   padding: 14px;
   border: none;
   border-radius: 12px;
@@ -169,7 +169,56 @@
   opacity: 0.85;
 }
 
+.cartBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .cartBtnInCart {
-  background: var(--color-btn-secondary, #f0f0f0);
-  color: var(--color-primary, #4caf50);
+  background: var(--color-primary, #4caf50);
+  color: #fff;
+}
+
+/* ── Bottom bar row (stepper + button) ── */
+.bottomBarRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stepper {
+  display: flex;
+  align-items: center;
+  background: var(--bg-secondary, #f5f5f5);
+  border-radius: 12px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+
+.stepBtn {
+  width: 44px;
+  height: 48px;
+  border: none;
+  background: var(--color-primary, #4caf50);
+  color: #fff;
+  font-size: 22px;
+  font-weight: 400;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+
+.stepBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stepQty {
+  min-width: 40px;
+  text-align: center;
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--color-text, #000);
 }

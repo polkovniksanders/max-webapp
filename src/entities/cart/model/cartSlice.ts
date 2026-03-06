@@ -7,6 +7,7 @@ export interface CartItem {
   old_price: number | null
   imageFile: string | null
   quantity: number
+  cartItemId?: number
 }
 
 interface CartState {
@@ -21,6 +22,7 @@ const cartSlice = createSlice({
       const existing = state.items.find((i) => i.productId === action.payload.productId)
       if (existing) {
         existing.quantity += action.payload.quantity
+        if (action.payload.cartItemId) existing.cartItemId = action.payload.cartItemId
       } else {
         state.items.push(action.payload)
       }
@@ -32,11 +34,27 @@ const cartSlice = createSlice({
       const item = state.items.find((i) => i.productId === action.payload.productId)
       if (item) item.quantity = action.payload.quantity
     },
+    setCartItemId(state, action: PayloadAction<{ productId: number; cartItemId: number }>) {
+      const item = state.items.find((i) => i.productId === action.payload.productId)
+      if (item) item.cartItemId = action.payload.cartItemId
+    },
+    hydrateCart(state, action: PayloadAction<CartItem[]>) {
+      for (const incoming of action.payload) {
+        const existing = state.items.find((i) => i.productId === incoming.productId)
+        if (existing) {
+          existing.quantity = incoming.quantity
+          if (incoming.cartItemId) existing.cartItemId = incoming.cartItemId
+        } else {
+          state.items.push(incoming)
+        }
+      }
+    },
     clearCart(state) {
       state.items = []
     },
   },
 })
 
-export const { addItem, removeItem, updateQuantity, clearCart } = cartSlice.actions
+export const { addItem, removeItem, updateQuantity, setCartItemId, hydrateCart, clearCart } =
+  cartSlice.actions
 export default cartSlice.reducer

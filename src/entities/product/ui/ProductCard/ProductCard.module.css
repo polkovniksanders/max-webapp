@@ -84,9 +84,16 @@
   overflow: hidden;
 }
 
-.addToCartBtn {
+/* ── Action row ── */
+.actions {
   margin-top: auto;
-  width: 100%;
+  display: flex;
+  align-items: stretch;
+  gap: 6px;
+}
+
+.addToCartBtn {
+  flex: 1;
   padding: 8px 0;
   border: none;
   border-radius: var(--radius-small, 20px);
@@ -100,4 +107,68 @@
 
 .addToCartBtn:hover {
   opacity: 0.85;
+}
+
+.addToCartBtn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ── Cart icon button ── */
+.cartIconBtn {
+  width: 34px;
+  flex-shrink: 0;
+  border: none;
+  border-radius: var(--radius-small, 20px);
+  background: var(--bg-secondary, #f0f0f0);
+  color: var(--color-text-secondary, #666);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+}
+
+.cartIconBtn:hover {
+  opacity: 0.75;
+}
+
+/* ── Stepper ── */
+.stepper {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-secondary, #f5f5f5);
+  border-radius: var(--radius-small, 20px);
+  overflow: hidden;
+}
+
+.stepBtn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: var(--color-primary, #976BF6);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: opacity 0.15s;
+  flex-shrink: 0;
+}
+
+.stepBtn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.stepQty {
+  flex: 1;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text, #000);
 }

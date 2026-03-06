@@ -5,6 +5,7 @@ import type { ApiCategory } from '@entities/category'
 import { useLazyGetCategoryProductsQuery, ProductCard } from '@entities/product'
 import type { ApiProduct } from '@entities/product'
 import { useGetShopQuery } from '@entities/shop'
+import { useCartItem } from '@entities/cart'
 import { Spinner } from '@shared/ui'
 import { useOnScreen } from '@shared/hooks/useOnScreen'
 import { ROUTES } from '@shared/config/routes'
@@ -12,6 +13,36 @@ import { getShopId } from '@shared/config/shopId'
 import styles from './MainPage.module.css'
 
 type CategoryRow = ApiCategory & { products?: ApiProduct[] }
+
+const CartableProductCard = ({
+  product,
+  onClick,
+}: {
+  product: ApiProduct
+  onClick: () => void
+}) => {
+  const navigate = useNavigate()
+  const { quantity, isLoading, add, increment, decrement } = useCartItem({
+    id: product.id,
+    title: product.title,
+    price: product.price,
+    old_price: product.old_price,
+    imageFile: product.images?.[0]?.file ?? null,
+  })
+
+  return (
+    <ProductCard
+      product={product}
+      onClick={onClick}
+      cartQuantity={quantity}
+      cartLoading={isLoading}
+      onAddToCart={() => add()}
+      onIncrement={() => increment()}
+      onDecrement={() => decrement()}
+      onCartIconClick={() => navigate(ROUTES.CART)}
+    />
+  )
+}
 
 export const MainPage = () => {
   const navigate = useNavigate()
@@ -83,7 +114,7 @@ export const MainPage = () => {
             </div>
             <div className={styles.grid}>
               {category.products.map((product) => (
-                <ProductCard
+                <CartableProductCard
                   key={product.id}
                   product={product}
                   onClick={() => handleProductClick(product)}
@@ -128,13 +159,6 @@ const ShopHeader = ({ shop, onInfoClick }: ShopHeaderProps) => {
         </div>
       )}
       <span className={styles.shopName}>{shop.name}</span>
-      <svg
-        className={styles.shopChevron}
-        width="16" height="16" viewBox="0 0 24 24"
-        fill="none" stroke="currentColor" strokeWidth="2"
-      >
-        <polyline points="9 18 15 12 9 6" />
-      </svg>
     </button>
   )
 }

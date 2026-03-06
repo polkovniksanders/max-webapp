@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate } from 'react-router-dom'
-import { useDispatch, useSelector } from 'react-redux'
 import { useGetProductQuery, buildImageUrl } from '@entities/product'
-import { addItem } from '@entities/cart'
-import type { RootState } from '@app/store'
+import { useCartItem } from '@entities/cart'
 import { useBackButton } from '@shared/hooks/useBackButton'
 import { SkeletonBlock, SkeletonLine } from '@shared/ui'
 import { ROUTES } from '@shared/config/routes'
@@ -12,11 +10,19 @@ import styles from './ProductPage.module.css'
 export const ProductPage = () => {
   const { id } = useParams<{ id: string }>()
   const navigate = useNavigate()
-  const dispatch = useDispatch()
 
   const { data: product, isLoading, isError } = useGetProductQuery(Number(id), { skip: !id })
-  const isInCart = useSelector((state: RootState) =>
-    state.cart.items.some((i) => i.productId === Number(id)),
+
+  const { quantity, isLoading: isCartLoading, add, increment, decrement } = useCartItem(
+    product
+      ? {
+          id: product.id,
+          title: product.title,
+          price: product.price,
+          old_price: product.old_price,
+          imageFile: product.images?.[0]?.file ?? null,
+        }
+      : { id: 0, title: '', price: 0, old_price: null, imageFile: null },
   )
 
   const [attrsOpen, setAttrsOpen] = useState(true)
@@ -47,23 +53,6 @@ export const ProductPage = () => {
   const imageUrl = buildImageUrl(product.images?.[0]?.file)
   const discount = product.discount ?? 0
   const hasAttrs = product.attributes && Object.keys(product.attributes).length > 0
-
-  const handleCartBtn = () => {
-    if (isInCart) {
-      navigate(ROUTES.CART)
-      return
-    }
-    dispatch(
-      addItem({
-        productId: product.id,
-        title: product.title,
-        price: product.price,
-        old_price: product.old_price,
-        imageFile: product.images?.[0]?.file ?? null,
-        quantity: 1,
-      }),
-    )
-  }
 
   return (
     <div className={styles.page}>
@@ -120,11 +109,43 @@ export const ProductPage = () => {
         )}
       </div>
 
-      {/* Sticky кнопка корзины */}
+      {/* Sticky bottom bar */}
       <div className={styles.bottomBar}>
-        <button className={`${styles.cartBtn} ${isInCart ? styles.cartBtnInCart : ''}`} onClick={handleCartBtn}>
-          {isInCart ? 'Перейти в корзину' : 'Добавить в корзину'}
-        </button>
+        {quantity > 0 ? (
+          <div className={styles.bottomBarRow}>
+            <div className={styles.stepper}>
+              <button
+                className={styles.stepBtn}
+                onClick={decrement}
+                disabled={isCartLoading}
+              >
+                −
+              </button>
+              <span className={styles.stepQty}>{quantity}</span>
+              <button
+                className={styles.stepBtn}
+                onClick={increment}
+                disabled={isCartLoading}
+              >
+                +
+              </button>
+            </div>
+            <button
+              className={`${styles.cartBtn} ${styles.cartBtnInCart}`}
+              onClick={() => navigate(ROUTES.CART)}
+            >
+              В корзину
+            </button>
+          </div>
+        ) : (
+          <button
+            className={styles.cartBtn}
+            onClick={add}
+            disabled={isCartLoading}
+          >
+            {isCartLoading ? '...' : 'Добавить в корзину'}
+          </button>
+        )}
       </div>
     </div>
   )
