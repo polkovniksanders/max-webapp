@@ -72,6 +72,8 @@ export interface ShopStyle {
 export interface ApiShopDetails {
   contact_info?: string | null
   style?: string | null
+  /** JSON-serialised `CheckoutFormConfig` returned by the shop API. */
+  checkout_config?: string | null
 }
 
 export interface ApiShop {

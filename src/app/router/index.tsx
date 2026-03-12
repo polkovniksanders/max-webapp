@@ -6,6 +6,9 @@ import { route as productRoute } from '@pages/product'
 import { route as categoriesRoute } from '@pages/categories'
 import { route as profileRoute } from '@pages/profile'
 import { route as cartRoute } from '@pages/cart'
+import { route as checkoutContactRoute } from '@pages/checkout-contact'
+import { route as checkoutDeliveryRoute } from '@pages/checkout-delivery'
+import { route as ofertaRoute } from '@pages/oferta'
 import { ROUTES } from '@shared/config/routes'
 
 const pageRoutes = [
@@ -16,6 +19,9 @@ const pageRoutes = [
   categoriesRoute,
   profileRoute,
   cartRoute,
+  checkoutContactRoute,
+  checkoutDeliveryRoute,
+  ofertaRoute,
 ]
 
 export const AppRouter = () => {

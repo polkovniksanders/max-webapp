@@ -7,4 +7,7 @@ export const ROUTES = {
   PROFILE: '/profile',
   CART: '/cart',
   ORDERS: '/orders',
+  CHECKOUT_CONTACT: '/checkout/contact',
+  CHECKOUT_DELIVERY: '/checkout/delivery',
+  OFERTA: '/oferta',
 } as const
