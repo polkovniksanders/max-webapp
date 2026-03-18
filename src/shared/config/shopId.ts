@@ -1,4 +1,6 @@
-// Resolves shop ID from MAX deep link start_param, falls back to mock ID.
+// Resolves shop ID with the following priority:
+// 1. MAX Bridge deep link start_param (production, inside MAX messenger)
+// 2. URL query param ?shop_id=... (web link to clients)
 // Called lazily so window.WebApp is guaranteed to be initialized by call time.
 export const getShopId = (): number => {
   const startParam = window.WebApp?.initDataUnsafe?.start_param
@@ -6,5 +8,12 @@ export const getShopId = (): number => {
     const id = parseInt(startParam, 10)
     if (!isNaN(id)) return id
   }
-  return 12 // mock fallback
+
+  const urlParam = new URLSearchParams(window.location.search).get('shop_id')
+  if (urlParam) {
+    const id = parseInt(urlParam, 10)
+    if (!isNaN(id)) return id
+  }
+
+  return 369 // default fallback
 }

@@ -3,8 +3,7 @@ import { useLazyReadCartQuery, useUpdateCartMutation, useDeleteCartMutation } fr
 import { addItem, removeItem, updateQuantity, setCartItemId } from './cartSlice'
 import type { CartItem } from './cartSlice'
 import { getShopId } from '@shared/config/shopId'
-
-const TELEGRAM_USER_ID = 5492444
+import { getMessengerUserId } from '@shared/config/userId'
 
 export interface CartProduct {
   id: number
@@ -16,6 +15,16 @@ export interface CartProduct {
 
 type CartState = { cart: { items: CartItem[] } }
 
+/**
+ * Manages cart operations for a single product.
+ *
+ * Syncs Redux cart state with the backend API on every mutation.
+ * After `add()`, immediately re-fetches the cart to obtain the server-assigned
+ * cart item ID (needed for subsequent delete operations).
+ *
+ * @param product - The product to manage in the cart
+ * @returns Cart item state and action handlers
+ */
 export const useCartItem = (product: CartProduct) => {
   const dispatch = useDispatch()
   const cartItem = useSelector((state: CartState) =>
@@ -27,12 +36,13 @@ export const useCartItem = (product: CartProduct) => {
   const [readCart, { isFetching: isReading }] = useLazyReadCartQuery()
 
   const shopId = getShopId()
+  const userId = getMessengerUserId()
   const quantity = cartItem?.quantity ?? 0
   const isLoading = isUpdating || isDeleting || isReading
 
   const add = async () => {
     await updateCart({
-      telegram_user_id: TELEGRAM_USER_ID,
+      messenger_user_id: userId,
       shop_id: shopId,
       product_id: product.id,
       quantity: 1,
@@ -48,7 +58,7 @@ export const useCartItem = (product: CartProduct) => {
       }),
     )
     // Fetch cart to get cartItemId assigned by API
-    const result = await readCart({ shop_id: shopId, telegram_id: TELEGRAM_USER_ID })
+    const result = await readCart({ shop_id: shopId, messenger_user_id: userId })
     const apiItem = result.data?.find((i) => i.product_id === product.id)
     if (apiItem) {
       dispatch(setCartItemId({ productId: product.id, cartItemId: apiItem.id }))
@@ -58,7 +68,7 @@ export const useCartItem = (product: CartProduct) => {
   const increment = async () => {
     const newQty = quantity + 1
     await updateCart({
-      telegram_user_id: TELEGRAM_USER_ID,
+      messenger_user_id: userId,
       shop_id: shopId,
       product_id: product.id,
       quantity: newQty,
@@ -71,7 +81,7 @@ export const useCartItem = (product: CartProduct) => {
       if (cartItem?.cartItemId) {
         await deleteCart({
           id: cartItem.cartItemId,
-          telegram_user_id: TELEGRAM_USER_ID,
+          messenger_user_id: userId,
           shop_id: shopId,
         })
       }
@@ -79,7 +89,7 @@ export const useCartItem = (product: CartProduct) => {
     } else {
       const newQty = quantity - 1
       await updateCart({
-        telegram_user_id: TELEGRAM_USER_ID,
+        messenger_user_id: userId,
         shop_id: shopId,
         product_id: product.id,
         quantity: newQty,

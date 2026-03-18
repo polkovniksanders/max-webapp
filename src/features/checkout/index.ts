@@ -11,9 +11,10 @@ export {
   loadContactData,
   saveDeliveryData,
   loadDeliveryData,
+  clearCheckoutData,
 } from './model/storage'
 export type { ContactFormData } from './model/storage'
 
 export { buildDynamicSchema } from './model/buildDynamicSchema'
 
-export { MOCK_CHECKOUT_CONFIG } from './model/mockConfig'
+export { DEFAULT_CHECKOUT_CONFIG } from './model/defaultConfig'

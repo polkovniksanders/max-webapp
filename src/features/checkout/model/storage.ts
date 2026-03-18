@@ -60,3 +60,13 @@ export function loadDeliveryData(): Record<string, unknown> {
     return {}
   }
 }
+
+/**
+ * Removes all checkout-related data from sessionStorage.
+ * Call this after a successful order submission to prevent stale data
+ * from pre-filling the form in subsequent sessions.
+ */
+export function clearCheckoutData(): void {
+  sessionStorage.removeItem(CONTACT_KEY)
+  sessionStorage.removeItem(DELIVERY_KEY)
+}

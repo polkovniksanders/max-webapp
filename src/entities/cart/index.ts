@@ -8,7 +8,12 @@ export {
   clearCart,
 } from './model/cartSlice'
 export type { CartItem } from './model/cartSlice'
-export { useLazyReadCartQuery, useUpdateCartMutation, useDeleteCartMutation } from './model/cartApi'
-export type { CartApiItem } from './model/cartApi'
+export {
+  useLazyReadCartQuery,
+  useUpdateCartMutation,
+  useDeleteCartMutation,
+  useLazyGetCartPromocodeQuery,
+} from './model/cartApi'
+export type { CartApiItem, CartApiPromocode } from './model/cartApi'
 export { useCartItem } from './model/useCartItem'
 export type { CartProduct } from './model/useCartItem'

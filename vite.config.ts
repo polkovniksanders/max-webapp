@@ -4,9 +4,12 @@ import { resolve } from 'path'
 
 export default defineConfig({
   plugins: [react()],
-  server: {
-    port: 8080,
-  },
+    server: {
+        host: '0.0.0.0',
+        port: 8080,
+        strictPort: true,
+        allowedHosts: ['localhost.berghub.ru'],
+    },
   // В production (сборка для GitHub Pages) используем subpath /max-webapp/
   // В dev-режиме оставляем /, чтобы dev-сервер работал нормально
   base: process.env.NODE_ENV === 'production' ? '/max-webapp/' : '/',

@@ -57,5 +57,5 @@ export interface ApiProductGroup {
 /** Формирует полный URL изображения товара */
 export const buildImageUrl = (file: string | null | undefined): string => {
   if (!file) return ''
-  return `https://api.spodial.com/storage/${file}`
+  return `${import.meta.env.VITE_STORAGE_URL}${file}`
 }

@@ -9,5 +9,6 @@ export const ROUTES = {
   ORDERS: '/orders',
   CHECKOUT_CONTACT: '/checkout/contact',
   CHECKOUT_DELIVERY: '/checkout/delivery',
+  CHECKOUT_SUCCESS: '/checkout/success',
   OFERTA: '/oferta',
 } as const

@@ -1,5 +1,5 @@
 import { useEffect } from 'react'
-import { HashRouter } from 'react-router-dom'
+import { HashRouter, useLocation } from 'react-router-dom'
 import { Provider, useDispatch } from 'react-redux'
 import { store } from './store'
 import { notifyReady } from '@shared/bridge'
@@ -9,18 +9,22 @@ import type { CartItem } from '@entities/cart'
 import { Navbar } from '@widgets/navbar'
 import { AppRouter } from './router'
 import { getShopId } from '@shared/config/shopId'
+import { getMessengerUserId } from '@shared/config/userId'
 import './styles/index.css'
 
-const TELEGRAM_USER_ID = 5492444
+const ROUTES_WITHOUT_NAVBAR = ['/checkout/contact', '/checkout/delivery', '/checkout/success']
 
 const AppContent = () => {
   useShopStyle()
 
   const dispatch = useDispatch()
   const [fetchCart] = useLazyReadCartQuery()
+  const { pathname } = useLocation()
+  const showNavbar = !ROUTES_WITHOUT_NAVBAR.includes(pathname)
 
   useEffect(() => {
-    fetchCart({ shop_id: getShopId(), telegram_id: TELEGRAM_USER_ID }).then((result) => {
+    const userId = getMessengerUserId()
+    fetchCart({ shop_id: getShopId(), messenger_user_id: userId }).then((result) => {
       if (result.data && result.data.length > 0) {
         const items: CartItem[] = result.data.map((apiItem) => ({
           productId: apiItem.product_id,
@@ -41,7 +45,7 @@ const AppContent = () => {
       <main style={{ flex: 1, overflowY: 'auto' }}>
         <AppRouter />
       </main>
-      <Navbar />
+      {showNavbar && <Navbar />}
     </>
   )
 }

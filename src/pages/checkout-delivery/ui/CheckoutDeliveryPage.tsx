@@ -1,33 +1,38 @@
-import { useMemo, useState } from 'react'
+import { useMemo } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { CheckCircle } from 'lucide-react'
 import { PageHeader } from '@shared/ui'
 import { useBackButton } from '@shared/hooks/useBackButton'
 import { ROUTES } from '@shared/config/routes'
 import { useGetShopQuery } from '@entities/shop'
 import { getShopId } from '@shared/config/shopId'
+import { getMessengerUserId } from '@shared/config/userId'
+import { getWebApp } from '@shared/bridge'
+import { useBuyProductMutation } from '@entities/order'
+import { clearCart } from '@entities/cart'
+import { useAppSelector, useAppDispatch } from '@app/store'
 import {
   buildDynamicSchema,
   loadContactData,
   loadDeliveryData,
   saveDeliveryData,
-  MOCK_CHECKOUT_CONFIG,
+  clearCheckoutData,
+  DEFAULT_CHECKOUT_CONFIG,
 } from '@features/checkout'
 import type { CheckoutFormConfig, CheckoutField } from '@features/checkout'
 import styles from './CheckoutDeliveryPage.module.css'
 
-/** Resolves the checkout form config: parses `shop.details.checkout_config` or falls back to mock. */
+/** Resolves the checkout form config: parses `shop.details.checkout_config` or falls back to default. */
 function resolveConfig(checkoutConfigRaw?: string | null): CheckoutFormConfig {
   if (checkoutConfigRaw) {
     try {
       return JSON.parse(checkoutConfigRaw) as CheckoutFormConfig
     } catch {
-      // JSON parse failure — fall through to mock
+      // JSON parse failure — fall through to default
     }
   }
-  return MOCK_CHECKOUT_CONFIG
+  return DEFAULT_CHECKOUT_CONFIG
 }
 
 /**
@@ -104,16 +109,22 @@ function DynamicField({
 /**
  * Step 2 of checkout: dynamic delivery form driven by server config.
  *
- * - Reads `checkout_config` from shop API; falls back to `MOCK_CHECKOUT_CONFIG`.
- * - Builds a Zod schema dynamically via `buildDynamicSchema`.
- * - Restores previously entered delivery data from sessionStorage.
- * - On submit, persists delivery data and displays a mock success screen.
+ * Flow:
+ * 1. Reads `checkout_config` from shop API; falls back to `DEFAULT_CHECKOUT_CONFIG`.
+ * 2. Builds a Zod schema dynamically via `buildDynamicSchema`.
+ * 3. Restores previously entered delivery data from sessionStorage.
+ * 4. On submit, calls `max/market/product/buy` with the full order payload:
+ *    - Contact data (phone) from sessionStorage (step 1)
+ *    - Cart items from Redux store
+ *    - Dynamic delivery fields from the form
+ *    - User identity from the MAX Bridge
+ * 5. On success: clears cart + sessionStorage, navigates to `/checkout/success`.
+ * 6. On error: shows an alert with the server message.
  */
 export const CheckoutDeliveryPage = () => {
   const navigate = useNavigate()
+  const dispatch = useAppDispatch()
   useBackButton()
-
-  const [isSubmitted, setIsSubmitted] = useState(false)
 
   const { data: shop } = useGetShopQuery(getShopId())
 
@@ -136,35 +147,81 @@ export const CheckoutDeliveryPage = () => {
     defaultValues: savedDelivery,
   })
 
-  const onSubmit = (data: Record<string, unknown>) => {
+  // Select cart items from Redux — used to build `product_id_list`.
+  const cartItems = useAppSelector((state) => state.cart.items)
+
+  const [buyProduct, { isLoading: isBuying }] = useBuyProductMutation()
+
+  /**
+   * Assembles the full order payload and submits to the API.
+   *
+   * Phone is stripped to digits only to satisfy the backend's ValidPhoneRule.
+   * MAX Bridge user fields (first_name, last_name, username) are forwarded
+   * so the backend can create/update the user record.
+   * Dynamic delivery fields are spread in as-is — the server validates them
+   * against the shop-specific rules.
+   */
+  const onSubmit = async (data: Record<string, unknown>) => {
+    // Persist delivery data so the form can be restored if navigation occurs.
     saveDeliveryData(data)
+
     const contactData = loadContactData()
-    // TODO: send order to API — for now log and show success screen.
-    console.log('Checkout data:', contactData, data)
-    setIsSubmitted(true)
+
+    if (!contactData.phone) {
+      alert('Не удалось загрузить контактные данные. Вернитесь на шаг 1.')
+      return
+    }
+
+    // Strip formatting mask — backend expects digits only.
+    const phoneDigits = contactData.phone.replace(/\D/g, '')
+
+    // Collect productId values for every item currently in the cart.
+    const productIdList = cartItems.map((item) => item.productId)
+
+    // Forward MAX Bridge user identity so the server can track the buyer.
+    const bridgeUser = getWebApp()?.initDataUnsafe?.user
+
+    const full_name = [bridgeUser?.first_name, bridgeUser?.last_name].filter(Boolean).join(' ')
+
+    const payload = {
+      telegram_user_id: getMessengerUserId(),
+      shop_id: getShopId(),
+      phone: phoneDigits,
+      full_name,
+      product_id_list: productIdList,
+      // Optional identity fields from MAX Bridge.
+      first_name: bridgeUser?.first_name,
+      last_name: bridgeUser?.last_name,
+      username: bridgeUser?.username,
+      // All dynamic delivery form values (address, city, etc.) are spread here.
+      ...data,
+    }
+
+    try {
+      await buyProduct(payload).unwrap()
+
+      // Order placed — clean up checkout state.
+      dispatch(clearCart())
+      clearCheckoutData()
+
+      navigate(ROUTES.CHECKOUT_SUCCESS, { replace: true })
+    } catch (err) {
+      // Surface the server error message when available; fallback to generic text.
+      const message =
+        err != null &&
+        typeof err === 'object' &&
+        'data' in err &&
+        err.data != null &&
+        typeof err.data === 'object' &&
+        'message' in err.data
+          ? String((err.data as { message: string }).message)
+          : 'Не удалось оформить заказ. Попробуйте ещё раз.'
+
+      alert(message)
+    }
   }
 
-  if (isSubmitted) {
-    return (
-      <div className={`${styles.page} ${styles.successPage}`}>
-        <div className={styles.successWrap}>
-          <div className={styles.successIcon}>
-            <CheckCircle size={36} color="#27ae60" strokeWidth={2} />
-          </div>
-          <p className={styles.successTitle}>Заказ оформлен!</p>
-          <p className={styles.successText}>
-            Мы свяжемся с вами в ближайшее время
-          </p>
-          <button
-            className={styles.backToShopBtn}
-            onClick={() => navigate(ROUTES.MAIN)}
-          >
-            Вернуться в магазин
-          </button>
-        </div>
-      </div>
-    )
-  }
+  const isDisabled = isSubmitting || isBuying
 
   return (
     <div className={styles.page}>
@@ -194,10 +251,10 @@ export const CheckoutDeliveryPage = () => {
         <button
           type="submit"
           form="delivery-form"
-          disabled={isSubmitting}
+          disabled={isDisabled}
           className={styles.submitBtn}
         >
-          Оформить заказ
+          {isBuying ? 'Оформляем...' : 'Оформить заказ'}
         </button>
       </div>
     </div>

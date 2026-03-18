@@ -1,4 +1,5 @@
 import { baseApi } from '@shared/api'
+import { API_ENDPOINTS } from '@shared/api/endpoints'
 
 export interface CartApiProduct {
   id: number
@@ -14,11 +15,17 @@ export interface CartApiItem {
   product: CartApiProduct
   quantity: number
   shop_id: number
-  telegram_user_id: number
+  messenger_user_id: number
+}
+
+export interface CartApiPromocode {
+  code: string
+  discount: number
+  [key: string]: unknown
 }
 
 interface CartUpdateDTO {
-  telegram_user_id: number
+  messenger_user_id: number
   shop_id: number
   product_id: number
   quantity: number
@@ -26,31 +33,43 @@ interface CartUpdateDTO {
 
 interface CartDeleteDTO {
   id: number
-  telegram_user_id: number
+  messenger_user_id: number
   shop_id: number
 }
 
-export const { useLazyReadCartQuery, useUpdateCartMutation, useDeleteCartMutation } =
-  baseApi.injectEndpoints({
-    endpoints: (builder) => ({
-      readCart: builder.query<CartApiItem[], { shop_id: number; telegram_id: number }>({
-        query: ({ shop_id, telegram_id }) =>
-          `market/card/list?shop_id=${shop_id}&telegram_id=${telegram_id}`,
-        transformResponse: (response: { data: CartApiItem[] }) => response.data ?? [],
-      }),
-      updateCart: builder.mutation<void, CartUpdateDTO>({
-        query: (body) => ({
-          url: 'market/card/update',
-          method: 'POST',
-          body,
-        }),
-      }),
-      deleteCart: builder.mutation<void, CartDeleteDTO>({
-        query: (body) => ({
-          url: 'market/card/delete',
-          method: 'DELETE',
-          body,
-        }),
+export const {
+  useLazyReadCartQuery,
+  useUpdateCartMutation,
+  useDeleteCartMutation,
+  useLazyGetCartPromocodeQuery,
+} = baseApi.injectEndpoints({
+  endpoints: (builder) => ({
+    readCart: builder.query<CartApiItem[], { shop_id: number; messenger_user_id: number }>({
+      query: ({ shop_id, messenger_user_id }) =>
+        `${API_ENDPOINTS.MARKET_CARD_LIST}?shop_id=${shop_id}&messenger_user_id=${messenger_user_id}`,
+      transformResponse: (response: { data: CartApiItem[] }) => response.data ?? [],
+    }),
+
+    updateCart: builder.mutation<void, CartUpdateDTO>({
+      query: (body) => ({
+        url: API_ENDPOINTS.MARKET_CARD_UPDATE,
+        method: 'POST',
+        body,
       }),
     }),
-  })
+
+    deleteCart: builder.mutation<void, CartDeleteDTO>({
+      query: (body) => ({
+        url: API_ENDPOINTS.MARKET_CARD_DELETE,
+        method: 'DELETE',
+        body,
+      }),
+    }),
+
+    getCartPromocode: builder.query<CartApiPromocode, { code: string; shop_id: number }>({
+      query: ({ code, shop_id }) =>
+        `${API_ENDPOINTS.MARKET_CARD_PROMOCODE}?code=${code}&shop_id=${shop_id}`,
+      transformResponse: (response: { data: CartApiPromocode }) => response.data,
+    }),
+  }),
+})
