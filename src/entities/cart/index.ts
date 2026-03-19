@@ -6,8 +6,10 @@ export {
   setCartItemId,
   hydrateCart,
   clearCart,
+  applyPromocode,
+  clearPromocode,
 } from './model/cartSlice'
-export type { CartItem } from './model/cartSlice'
+export type { CartItem, AppliedPromocode } from './model/cartSlice'
 export {
   useLazyReadCartQuery,
   useUpdateCartMutation,

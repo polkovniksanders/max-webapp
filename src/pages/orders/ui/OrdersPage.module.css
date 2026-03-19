@@ -1,0 +1,142 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--bg-secondary, #f8f8f8);
+  padding-bottom: 80px;
+}
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 16px;
+}
+
+.emptyText,
+.errorText {
+  font-size: 15px;
+  color: var(--color-text-secondary, #888);
+  text-align: center;
+}
+
+.retryBtn {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--color-primary, #976bf6);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+.card {
+  /* Reset button defaults */
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  width: 100%;
+  /* Card visuals */
+  background: var(--bg-layout, #fff);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  /* Subtle tap feedback */
+  transition: opacity 0.15s ease;
+}
+
+.card:active {
+  opacity: 0.75;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.orderId {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--color-text, #000);
+}
+
+.status {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-primary, #976bf6);
+  background: var(--color-background-secondary, #f3eeff);
+  padding: 3px 10px;
+  border-radius: 20px;
+}
+
+.items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.itemTitle {
+  flex: 1;
+  font-size: 14px;
+  color: var(--color-text, #000);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.itemQty {
+  font-size: 13px;
+  color: var(--color-text-secondary, #888);
+  flex-shrink: 0;
+}
+
+.itemPrice {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text, #000);
+  flex-shrink: 0;
+}
+
+.cardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid var(--border-color, #f0f0f0);
+}
+
+.date {
+  font-size: 13px;
+  color: var(--color-text-secondary, #888);
+}
+
+.footerRight {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.total {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--color-text, #000);
+}

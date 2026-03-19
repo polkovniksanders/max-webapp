@@ -1,6 +1,5 @@
 export const ROUTES = {
   MAIN: '/',
-  SHOP: '/shop',
   SHOP_DETAIL: '/shop-detail',
   PRODUCT: '/shop/product/:id',
   CATEGORIES: '/categories',
@@ -11,4 +10,5 @@ export const ROUTES = {
   CHECKOUT_DELIVERY: '/checkout/delivery',
   CHECKOUT_SUCCESS: '/checkout/success',
   OFERTA: '/oferta',
+  ORDER_DETAIL: '/orders/:orderId',
 } as const

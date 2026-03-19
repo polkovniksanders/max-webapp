@@ -12,6 +12,7 @@ export const shopApiSlice = baseApi.injectEndpoints({
     getShop: builder.query<ApiShop, number>({
       query: (shopId) => `shops/${shopId}`,
       transformResponse: (response: { data: ApiShop }) => response.data,
+      keepUnusedDataFor: 3600, // shop config changes very rarely
     }),
 
     visitShop: builder.mutation<void, void>({

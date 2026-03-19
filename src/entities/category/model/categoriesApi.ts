@@ -15,6 +15,7 @@ export const { useGetCategoriesQuery } = baseApi.injectEndpoints({
         return `${API_ENDPOINTS.PRODUCTS_CATEGORY}?${params}`
       },
       transformResponse: (response: { data: ApiCategory[] }) => response.data,
+      keepUnusedDataFor: 1800, // category list changes rarely
     }),
   }),
 })

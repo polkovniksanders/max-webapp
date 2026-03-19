@@ -18,9 +18,16 @@ export interface CartApiItem {
   messenger_user_id: number
 }
 
+/**
+ * Promocode validation response from the backend.
+ * `summ` is the total cart amount AFTER the discount is applied.
+ * It is absent when the promo check call fails (use RTK error state instead).
+ */
 export interface CartApiPromocode {
-  code: string
-  discount: number
+  id: number
+  code: string | null
+  /** Discounted total amount. Present on success, absent on error. */
+  summ?: number
   [key: string]: unknown
 }
 
@@ -48,6 +55,8 @@ export const {
       query: ({ shop_id, messenger_user_id }) =>
         `${API_ENDPOINTS.MARKET_CARD_LIST}?shop_id=${shop_id}&messenger_user_id=${messenger_user_id}`,
       transformResponse: (response: { data: CartApiItem[] }) => response.data ?? [],
+      // Cart is managed by Redux (optimistic updates); don't cache the raw API response
+      keepUnusedDataFor: 0,
     }),
 
     updateCart: builder.mutation<void, CartUpdateDTO>({
@@ -70,6 +79,7 @@ export const {
       query: ({ code, shop_id }) =>
         `${API_ENDPOINTS.MARKET_CARD_PROMOCODE}?code=${code}&shop_id=${shop_id}`,
       transformResponse: (response: { data: CartApiPromocode }) => response.data,
+      keepUnusedDataFor: 0, // always validate fresh — promos can expire
     }),
   }),
 })

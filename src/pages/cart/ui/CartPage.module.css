@@ -3,7 +3,7 @@
   display: flex;
   flex-direction: column;
   min-height: 100%;
-  padding-bottom: 140px; /* room for summary + bottom bar */
+  padding-bottom: 140px; /* room for sticky bottom bar above navbar */
   background: #f7f7f7;
 }
 
@@ -22,9 +22,10 @@
 }
 
 .emptyText {
+  font-family: 'Unbounded', sans-serif;
   font-size: 17px;
   font-weight: 600;
-  color: #1a1a1a;
+  color: var(--color-text, #1a1a1a);
   margin: 0;
 }
 
@@ -39,33 +40,38 @@
 .itemsList {
   display: flex;
   flex-direction: column;
-  gap: 0;
   padding: 12px 16px;
   gap: 10px;
 }
 
-/* ── Cart row ─────────────────────────────────────────────── */
+/* ── Cart row card ────────────────────────────────────────── */
 .cartRow {
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  overflow: hidden;
+}
+
+/* ── Top section: image + details ────────────────────────── */
+.productInfo {
   display: flex;
   align-items: flex-start;
   gap: 12px;
-  background: #fff;
-  border-radius: 16px;
   padding: 12px;
-  position: relative;
 }
 
 /* ── Product image ────────────────────────────────────────── */
-.cartRowImage {
+.productImageWrapper {
   flex-shrink: 0;
-  width: 72px;
-  height: 72px;
+  width: 80px;
+  height: 80px;
   border-radius: 10px;
   overflow: hidden;
   background: #f0f0f0;
 }
 
-.productImage {
+.productImg {
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -77,148 +83,211 @@
   background: linear-gradient(135deg, #f0f0f0 0%, #e0e0e0 100%);
 }
 
-/* ── Row content ──────────────────────────────────────────── */
-.cartRowContent {
+/* ── Product details column ───────────────────────────────── */
+.productDetails {
   flex: 1;
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
 }
 
 .productTitle {
   font-size: 14px;
   font-weight: 500;
-  color: #1a1a1a;
+  color: var(--color-text, #1a1a1a);
   margin: 0;
   line-height: 1.35;
-  /* clamp to 2 lines */
+  /* clamp to 2 lines — mirrors reference ProductCard TypographyFactory rows={2} */
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
   overflow: hidden;
-  /* right padding so title doesn't go under the delete button */
-  padding-right: 28px;
 }
 
-.cartRowFooter {
+/* ── Meta row: qty count left | prices right ─────────────── */
+.productMeta {
   display: flex;
   align-items: center;
   justify-content: space-between;
 }
 
-.productPrice {
+.qtyText {
+  font-size: 13px;
+  color: var(--color-text-secondary, #888);
+}
+
+/* ── Price block: old price + current price ───────────────── */
+.priceBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+/* Strikethrough old price — shown only when old_price > price */
+.oldPrice {
+  font-size: 12px;
+  font-weight: 400;
+  color: #aaa;
+  text-decoration: line-through;
+}
+
+/* Current (sale) price */
+.price {
   font-size: 15px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-text, #1a1a1a);
 }
 
-/* ── Quantity controls ────────────────────────────────────── */
-.quantityControls {
+/* ── Horizontal divider between info and controls ─────────── */
+.divider {
+  height: 1px;
+  background: #f0f0f0;
+  margin: 0;
+}
+
+/* ── Controls row: delete btn left, stepper pill right ───── */
+.controlsRow {
   display: flex;
   align-items: center;
-  gap: 0;
-  background: #f5f5f5;
-  border-radius: 10px;
-  overflow: hidden;
+  justify-content: space-between;
+  padding: 8px 12px;
 }
 
-.qtyBtn {
-  width: 34px;
-  height: 34px;
+/* ── Delete button (bottom-left of card) ─────────────────── */
+.deleteBtn {
+  width: 36px;
+  height: 36px;
   border: none;
   background: transparent;
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 18px;
-  font-weight: 500;
-  color: var(--color-primary, #6b4ce6);
-  transition: background 0.15s;
+  color: #bbb;
+  padding: 0;
+  border-radius: 8px;
+  transition: color 0.15s;
   flex-shrink: 0;
 }
 
-.qtyBtn:active {
-  background: #ebebeb;
+.deleteBtn:active {
+  color: var(--color-error, #ef4444);
 }
 
-.qtyBtn:disabled {
+.deleteBtn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+}
+
+/* ── Stepper: simple bordered round buttons ───────────────── */
+.stepper {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.stepperBtn {
+  width: 36px;
+  height: 36px;
+  border: 1.5px solid var(--border-color, #e0e0e0);
+  border-radius: 50%;
+  background: transparent;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  font-weight: 300;
+  color: var(--color-text, #333);
+  flex-shrink: 0;
+  transition: background 0.12s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.stepperBtn:active {
+  background: var(--bg-secondary, #f5f5f5);
+}
+
+.stepperBtn:disabled {
   opacity: 0.4;
   cursor: not-allowed;
 }
 
-.qtyValue {
-  min-width: 28px;
+.stepperCount {
+  min-width: 34px;
   text-align: center;
-  font-size: 15px;
-  font-weight: 600;
-  color: #1a1a1a;
+  font-size: 16px;
+  font-weight: 500;
+  color: var(--color-text, #1a1a1a);
+  user-select: none;
 }
 
-/* ── Delete button (top-right of card) ───────────────────── */
-.deleteBtn {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
-  border: none;
-  background: transparent;
-  cursor: pointer;
+/* ── Promocode wrapper ────────────────────────────────────── */
+.promocodeWrapper {
+  margin: 8px 16px 0;
+}
+
+/* ── Invoice — plain rows on page background (no white card) ─ */
+.invoice {
+  margin: 16px 16px 0;
   display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #c0c0c0;
-  padding: 0;
-  border-radius: 6px;
-  transition: color 0.15s, background 0.15s;
+  flex-direction: column;
 }
 
-.deleteBtn:active {
-  color: #ff4d4f;
-  background: #fff0f0;
-}
-
-.deleteBtn:disabled {
-  opacity: 0.3;
-  cursor: not-allowed;
-}
-
-/* ── Order summary ────────────────────────────────────────── */
-.summary {
-  margin: 4px 16px 0;
-  background: #fff;
-  border-radius: 16px;
-  padding: 14px 16px;
-}
-
-.summaryRow {
+.invoiceRow {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  padding: 6px 0;
 }
 
-.summaryLabel {
+.invoiceLabel {
   font-size: 14px;
-  color: #888;
+  color: var(--color-text-secondary, #888);
 }
 
-.summaryValue {
+.invoiceValue {
+  font-size: 14px;
+  color: var(--color-text, #1a1a1a);
+}
+
+/* Скидка shown as negative amount, same color */
+.invoiceDiscount {
+  color: var(--color-text, #1a1a1a);
+}
+
+/* Separator before Итого */
+.invoiceSeparator {
+  height: 1px;
+  background: var(--border-color, #e8e8e8);
+  margin: 6px 0;
+}
+
+.invoiceTotalRow {
+  padding-top: 2px;
+}
+
+.invoiceTotalLabel {
   font-size: 16px;
   font-weight: 700;
-  color: #1a1a1a;
+  color: var(--color-text, #1a1a1a);
+}
+
+.invoiceTotalValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text, #1a1a1a);
 }
 
 /* ── Sticky bottom bar ────────────────────────────────────── */
 .bottomBar {
   position: fixed;
-  bottom: 56px; /* above the Navbar */
+  bottom: 56px; /* sits above the Navbar tab bar */
   left: 0;
   right: 0;
-  padding: 12px 16px;
-  background: #fff;
-  border-top: 1px solid #f0f0f0;
+  padding: 10px 16px 14px;
+  background: var(--bg-secondary, #f7f7f7);
 }
 
 .checkoutBtn {
@@ -226,7 +295,7 @@
   padding: 14px;
   border-radius: 14px;
   border: none;
-  background: var(--color-primary, #6b4ce6);
+  background: var(--color-primary, #976bf6);
   color: #fff;
   font-size: 16px;
   font-weight: 600;

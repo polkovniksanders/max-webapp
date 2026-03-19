@@ -3,14 +3,27 @@ import { useNavigate } from 'react-router-dom'
 import { getWebApp } from '@shared/bridge'
 import { ROUTES } from '@shared/config/routes'
 import { getShopId } from '@shared/config/shopId'
-import { useLazyGetProductHistoryQuery, buildImageUrl } from '@entities/product'
+import { useLazyGetProductHistoryQuery } from '@entities/product'
+import { CartableProductCard } from '@widgets/cartable-product-card'
+import { SkeletonBlock, SkeletonLine } from '@shared/ui'
 import styles from './ProfilePage.module.css'
+
+const ProductCardSkeleton = () => (
+  <div className={styles.productCardSkeleton}>
+    <SkeletonBlock aspectRatio="1/1" borderRadius="12px" />
+    <div className={styles.productCardSkeletonInfo}>
+      <SkeletonLine height={13} />
+      <SkeletonLine width="70%" height={13} />
+      <SkeletonLine width="50%" height={18} />
+    </div>
+  </div>
+)
 
 export const ProfilePage = () => {
   const navigate = useNavigate()
   const user = getWebApp()?.initDataUnsafe?.user
 
-  const [fetchHistory, { data: historyProducts }] = useLazyGetProductHistoryQuery()
+  const [fetchHistory, { data: historyProducts, isLoading: isHistoryLoading }] = useLazyGetProductHistoryQuery()
 
   useEffect(() => {
     fetchHistory(getShopId())
@@ -41,26 +54,27 @@ export const ProfilePage = () => {
         </button>
       </section>
 
-      {historyProducts && historyProducts.length > 0 && (
+      {isHistoryLoading && (
         <section className={styles.section}>
           <h2 className={styles.sectionTitle}>История просмотров</h2>
-          <div className={styles.historyScroll}>
+          <div className={styles.historyGrid}>
+            {Array.from({ length: 4 }).map((_, i) => (
+              <ProductCardSkeleton key={i} />
+            ))}
+          </div>
+        </section>
+      )}
+
+      {!isHistoryLoading && historyProducts && historyProducts.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>История просмотров</h2>
+          <div className={styles.historyGrid}>
             {historyProducts.map((product) => (
-              <div
+              <CartableProductCard
                 key={product.id}
-                className={styles.historyCard}
+                product={product}
                 onClick={() => navigate(ROUTES.PRODUCT.replace(':id', String(product.id)))}
-              >
-                <div className={styles.historyCardImg}>
-                  {product.images[0]?.file ? (
-                    <img src={buildImageUrl(product.images[0].file)} alt={product.title} />
-                  ) : (
-                    <div className={styles.historyCardImgPlaceholder} />
-                  )}
-                </div>
-                <p className={styles.historyCardPrice}>{product.price.toLocaleString('ru-RU')} ₽</p>
-                <p className={styles.historyCardTitle}>{product.title}</p>
-              </div>
+              />
             ))}
           </div>
         </section>

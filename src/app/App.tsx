@@ -1,12 +1,14 @@
 import { useEffect } from 'react'
 import { HashRouter, useLocation } from 'react-router-dom'
 import { Provider, useDispatch } from 'react-redux'
+import { Toaster } from 'sonner'
 import { store } from './store'
 import { notifyReady } from '@shared/bridge'
 import { useShopStyle } from '@entities/shop'
 import { useLazyReadCartQuery, hydrateCart } from '@entities/cart'
 import type { CartItem } from '@entities/cart'
 import { Navbar } from '@widgets/navbar'
+import { ModalProvider } from '@shared/ui'
 import { AppRouter } from './router'
 import { getShopId } from '@shared/config/shopId'
 import { getMessengerUserId } from '@shared/config/userId'
@@ -58,7 +60,10 @@ export const App = () => {
   return (
     <Provider store={store}>
       <HashRouter>
-        <AppContent />
+        <ModalProvider>
+          <AppContent />
+          <Toaster position="top-center" richColors closeButton />
+        </ModalProvider>
       </HashRouter>
     </Provider>
   )

@@ -164,7 +164,7 @@ export const CheckoutContactPage = () => {
           disabled={isSubmitting}
           className={styles.submitBtn}
         >
-          Продолжить
+          {isSubmitting ? 'Продолжаем...' : 'Продолжить'}
         </button>
       </div>
     </div>

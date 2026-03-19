@@ -1,0 +1,245 @@
+/* ─── Page shell ─────────────────────────────────────────────────────────── */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  background: var(--bg-secondary, #f8f8f8);
+  padding-bottom: 80px;
+}
+
+/* ─── Centered state (error / not-found) ─────────────────────────────────── */
+
+.center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 48px 16px;
+}
+
+.errorText {
+  font-size: 15px;
+  color: var(--color-text-secondary, #888);
+  text-align: center;
+}
+
+.retryBtn {
+  padding: 10px 24px;
+  border-radius: 12px;
+  border: none;
+  background: var(--color-primary, #976bf6);
+  color: #fff;
+  font-size: 15px;
+  cursor: pointer;
+}
+
+.backLink {
+  background: none;
+  border: none;
+  font-size: 14px;
+  color: var(--color-primary, #976bf6);
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+/* ─── Content ─────────────────────────────────────────────────────────────── */
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 16px;
+}
+
+/* ─── Section card ────────────────────────────────────────────────────────── */
+
+.section {
+  background: var(--bg-layout, #fff);
+  border-radius: 16px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.sectionTitle {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--color-text-secondary, #888);
+  margin: 0 0 2px;
+}
+
+/* ─── Order header row ────────────────────────────────────────────────────── */
+
+.orderHeadRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.orderId {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--color-text, #000);
+}
+
+/* ─── Status badge ────────────────────────────────────────────────────────── */
+
+.statusBadge {
+  font-size: 13px;
+  font-weight: 500;
+  padding: 3px 10px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.statusDefault {
+  color: var(--color-primary, #976bf6);
+  background: var(--color-background-secondary, #f3eeff);
+}
+
+.statusSuccess {
+  color: var(--color-success, #34c759);
+  background: var(--color-background-success-secondary, #e9faf0);
+}
+
+.statusError {
+  color: var(--color-error, #ff3b30);
+  background: var(--color-background-error, #fff0ef);
+}
+
+/* ─── Info rows ───────────────────────────────────────────────────────────── */
+
+.infoRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.infoLabel {
+  font-size: 14px;
+  color: var(--color-text-secondary, #888);
+}
+
+.infoValue {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text, #000);
+  text-align: right;
+}
+
+/* ─── Product list ────────────────────────────────────────────────────────── */
+
+.productList {
+  display: flex;
+  flex-direction: column;
+}
+
+.productRow {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 4px 0;
+}
+
+.productMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  flex: 1;
+  min-width: 0;
+}
+
+.productTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text, #000);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.productUnit {
+  font-size: 12px;
+  color: var(--color-text-secondary, #888);
+}
+
+.productRight {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 2px;
+  flex-shrink: 0;
+}
+
+.productQtyBadge {
+  font-size: 12px;
+  color: var(--color-text-secondary, #888);
+}
+
+.productLineTotal {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text, #000);
+}
+
+.divider {
+  height: 1px;
+  background: var(--border-color, #f0f0f0);
+  margin: 8px 0;
+}
+
+/* ─── Total footer ────────────────────────────────────────────────────────── */
+
+.totalSection {
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.totalLabel {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--color-text, #000);
+}
+
+.totalAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-text, #000);
+}
+
+/* ─── Skeleton ────────────────────────────────────────────────────────────── */
+
+.skeletonHeader {
+  height: 52px;
+  background: var(--bg-layout, #fff);
+  margin-bottom: 12px;
+}
+
+.skeletonLine {
+  height: 16px;
+  width: 100%;
+  border-radius: 8px;
+  background: linear-gradient(
+    90deg,
+    var(--bg-secondary, #f0f0f0) 25%,
+    #e8e8e8 50%,
+    var(--bg-secondary, #f0f0f0) 75%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  margin-bottom: 10px;
+}
+
+@keyframes shimmer {
+  0% { background-position: 200% 0; }
+  100% { background-position: -200% 0; }
+}

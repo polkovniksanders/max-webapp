@@ -8,6 +8,8 @@ export interface ApiCategory {
   image: string | null
   is_active: boolean
   is_slider: boolean
-  highlight: string | null
+  highlight: string[] | null
   has_products: boolean
+  /** Populated client-side when building the category tree */
+  childCategoryList?: ApiCategory[]
 }

@@ -1,0 +1,49 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.message {
+  margin: 0;
+  font-size: 15px;
+  color: var(--color-text, #000);
+  line-height: 1.5;
+}
+
+.actions {
+  display: flex;
+  gap: 10px;
+}
+
+.cancelBtn,
+.confirmBtn {
+  flex: 1;
+  padding: 12px;
+  border: none;
+  border-radius: 12px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.cancelBtn:active,
+.confirmBtn:active {
+  opacity: 0.75;
+}
+
+.cancelBtn {
+  background: var(--bg-secondary, #f5f5f5);
+  color: var(--color-text, #000);
+}
+
+.confirmBtn {
+  background: var(--color-primary, #976bf6);
+  color: #fff;
+}
+
+.confirmBtn.danger {
+  background: var(--color-error, #ef4444);
+}

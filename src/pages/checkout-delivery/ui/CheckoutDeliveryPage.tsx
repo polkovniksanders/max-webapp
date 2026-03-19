@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { PageHeader } from '@shared/ui'
+import { toast } from '@shared/lib'
 import { useBackButton } from '@shared/hooks/useBackButton'
 import { ROUTES } from '@shared/config/routes'
 import { useGetShopQuery } from '@entities/shop'
@@ -87,10 +88,12 @@ function DynamicField({
         </select>
       )}
 
-      {(field.type === 'text' || field.type === 'number') && (
+      {(field.type === 'text' || field.type === 'email' || field.type === 'number') && (
         <input
           id={field.name}
           type={field.type}
+          inputMode={field.type === 'email' ? 'email' : undefined}
+          autoComplete={field.type === 'email' ? 'email' : undefined}
           placeholder={field.placeholder}
           className={inputClass}
           {...register(field.name)}
@@ -168,7 +171,7 @@ export const CheckoutDeliveryPage = () => {
     const contactData = loadContactData()
 
     if (!contactData.phone) {
-      alert('Не удалось загрузить контактные данные. Вернитесь на шаг 1.')
+      toast.error('Не удалось загрузить контактные данные. Вернитесь на шаг 1.')
       return
     }
 
@@ -181,19 +184,16 @@ export const CheckoutDeliveryPage = () => {
     // Forward MAX Bridge user identity so the server can track the buyer.
     const bridgeUser = getWebApp()?.initDataUnsafe?.user
 
-    const full_name = [bridgeUser?.first_name, bridgeUser?.last_name].filter(Boolean).join(' ')
-
     const payload = {
       telegram_user_id: getMessengerUserId(),
       shop_id: getShopId(),
       phone: phoneDigits,
-      full_name,
       product_id_list: productIdList,
       // Optional identity fields from MAX Bridge.
       first_name: bridgeUser?.first_name,
       last_name: bridgeUser?.last_name,
       username: bridgeUser?.username,
-      // All dynamic delivery form values (address, city, etc.) are spread here.
+      // All dynamic delivery form values (full_name, email, comment, etc.) are spread here.
       ...data,
     }
 
@@ -217,7 +217,7 @@ export const CheckoutDeliveryPage = () => {
           ? String((err.data as { message: string }).message)
           : 'Не удалось оформить заказ. Попробуйте ещё раз.'
 
-      alert(message)
+      toast.error(message)
     }
   }
 

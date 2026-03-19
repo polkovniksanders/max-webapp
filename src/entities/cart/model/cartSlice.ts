@@ -10,13 +10,31 @@ export interface CartItem {
   cartItemId?: number
 }
 
+/**
+ * Promocode application state.
+ * `discountAmount` is the final total after discount as returned by the API
+ * (field `summ` in the backend response), not the delta itself.
+ */
+export interface AppliedPromocode {
+  code: string
+  /** Total cart amount after applying the promocode (i.e. the discounted total) */
+  discountedTotal: number
+}
+
 interface CartState {
   items: CartItem[]
+  /** Currently applied promocode, null if none is active */
+  appliedPromocode: AppliedPromocode | null
+}
+
+const initialState: CartState = {
+  items: [],
+  appliedPromocode: null,
 }
 
 const cartSlice = createSlice({
   name: 'cart',
-  initialState: { items: [] } as CartState,
+  initialState,
   reducers: {
     addItem(state, action: PayloadAction<CartItem>) {
       const existing = state.items.find((i) => i.productId === action.payload.productId)
@@ -29,6 +47,10 @@ const cartSlice = createSlice({
     },
     removeItem(state, action: PayloadAction<number>) {
       state.items = state.items.filter((i) => i.productId !== action.payload)
+      // Clear promocode when cart becomes empty — discount is no longer valid
+      if (state.items.length === 0) {
+        state.appliedPromocode = null
+      }
     },
     updateQuantity(state, action: PayloadAction<{ productId: number; quantity: number }>) {
       const item = state.items.find((i) => i.productId === action.payload.productId)
@@ -51,10 +73,32 @@ const cartSlice = createSlice({
     },
     clearCart(state) {
       state.items = []
+      state.appliedPromocode = null
+    },
+    /**
+     * Saves a successfully validated promocode and its discounted total.
+     *
+     * @param action.payload.code - The promocode string entered by the user
+     * @param action.payload.discountedTotal - Total amount after discount (from API `summ` field)
+     */
+    applyPromocode(state, action: PayloadAction<AppliedPromocode>) {
+      state.appliedPromocode = action.payload
+    },
+    /** Removes the currently applied promocode, reverting to the original total. */
+    clearPromocode(state) {
+      state.appliedPromocode = null
     },
   },
 })
 
-export const { addItem, removeItem, updateQuantity, setCartItemId, hydrateCart, clearCart } =
-  cartSlice.actions
+export const {
+  addItem,
+  removeItem,
+  updateQuantity,
+  setCartItemId,
+  hydrateCart,
+  clearCart,
+  applyPromocode,
+  clearPromocode,
+} = cartSlice.actions
 export default cartSlice.reducer

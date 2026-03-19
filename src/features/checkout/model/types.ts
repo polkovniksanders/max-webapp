@@ -1,7 +1,7 @@
 /**
  * Possible input types for a dynamic checkout form field.
  */
-export type CheckoutFieldType = 'text' | 'number' | 'textarea' | 'select'
+export type CheckoutFieldType = 'text' | 'email' | 'number' | 'textarea' | 'select'
 
 /**
  * Validation rules for a single checkout field.

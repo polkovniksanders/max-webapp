@@ -1,0 +1,25 @@
+/* Sort trigger button — matches the search bar height (42px) and border style */
+.btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 30px;
+  border: 1px solid var(--border-color, #e8e8e8);
+  background: var(--bg-secondary, #f5f5f5);
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.btn:active {
+  background: var(--border-color, #e0e0e0);
+}
+
+/* Active state: sort is applied — highlights like the search bar focused */
+.btnActive {
+  border-color: var(--color-primary, #976bf6);
+  background: var(--color-background-secondary, #f3eeff);
+}

@@ -1,0 +1,1 @@
+export { CartableProductCard } from './CartableProductCard'

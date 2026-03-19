@@ -11,5 +11,9 @@ export const baseApi = createApi({
       return headers
     },
   }),
+  // Global defaults — overridden per-endpoint where needed
+  keepUnusedDataFor: 300,    // 5 min fallback for anything not explicitly set
+  refetchOnFocus: false,     // mini-app: no tab-switch refetches
+  refetchOnReconnect: true,  // re-fetch stale data when network comes back
   endpoints: () => ({}),
 })

@@ -1,11 +1,11 @@
-export type { Category, CategoryId } from './model/types'
-export { CATEGORIES } from './model/types'
 export type { ApiProduct, ApiProductImage, ApiProductDetail, ApiProductGroup } from './model/apiTypes'
 export { buildImageUrl } from './model/apiTypes'
+export type { ProductSortBy, SortDirection, SearchProductsParams } from './model/productsApi'
 export {
   useLazyGetCategoryProductsQuery,
+  useGetCategoryProductsQuery,
   useGetProductQuery,
-  useVisitProductMutation,
   useLazyGetProductHistoryQuery,
+  useSearchProductsQuery,
 } from './model/productsApi'
 export { ProductCard } from './ui/ProductCard/ProductCard'

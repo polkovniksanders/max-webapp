@@ -1,15 +1,17 @@
 import { NavLink } from 'react-router-dom'
 import { Home, LayoutList, ShoppingCart, User } from 'lucide-react'
 import { ROUTES } from '@shared/config/routes'
+import { useAppSelector } from '@app/store'
 import styles from './Navbar.module.css'
 
 const linkClass = ({ isActive }: { isActive: boolean }) =>
   isActive ? `${styles.link} ${styles.active}` : styles.link
 
-// Заглушка — потом подключить к реальному состоянию корзины
-const CART_COUNT = 0
-
 export const Navbar = () => {
+  const cartCount = useAppSelector((state) =>
+    state.cart.items.reduce((sum, item) => sum + item.quantity, 0),
+  )
+
   return (
     <nav className={styles.navbar}>
       <NavLink to={ROUTES.MAIN} end className={linkClass}>
@@ -25,8 +27,8 @@ export const Navbar = () => {
       <NavLink to={ROUTES.CART} className={linkClass}>
         <span className={styles.cartIcon}>
           <ShoppingCart size={22} strokeWidth={1.8} />
-          {CART_COUNT > 0 && (
-            <span className={styles.badge}>{CART_COUNT > 99 ? '99+' : CART_COUNT}</span>
+          {cartCount > 0 && (
+            <span className={styles.badge}>{cartCount > 99 ? '99+' : cartCount}</span>
           )}
         </span>
         <span className={styles.label}>Корзина</span>
