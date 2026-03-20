@@ -10,7 +10,7 @@ import { useGetShopQuery } from '@entities/shop'
 import { getShopId } from '@shared/config/shopId'
 import { getMessengerUserId } from '@shared/config/userId'
 import { getWebApp } from '@shared/bridge'
-import { useBuyProductMutation } from '@entities/order'
+import { useBuyProductMutation, useCreateOrderMutation } from '@entities/order'
 import { clearCart } from '@entities/cart'
 import { useAppSelector, useAppDispatch } from '@app/store'
 import {
@@ -153,10 +153,23 @@ export const CheckoutDeliveryPage = () => {
   // Select cart items from Redux — used to build `product_id_list`.
   const cartItems = useAppSelector((state) => state.cart.items)
 
-  const [buyProduct, { isLoading: isBuying }] = useBuyProductMutation()
+  const [buyProduct, { isLoading: isBuyingPaid }] = useBuyProductMutation()
+  const [createOrder, { isLoading: isBuyingFree }] = useCreateOrderMutation()
+  const isBuying = isBuyingPaid || isBuyingFree
+
+  // True when at least one cart item requires a payment system.
+  // Sourced from CartItem.buyable which is synced from the cart API after each add().
+  const isBuyable = cartItems.some((item) => item.buyable === true)
 
   /**
    * Assembles the full order payload and submits to the API.
+   *
+   * After a successful response the flow branches:
+   *   - isBuyable + redirect URL:
+   *       yookassa / cloudpayment → iframe payment page
+   *       unknown provider        → external browser (window.location)
+   *   - isBuyable + no redirect  → pending page (polls until confirmed)
+   *   - not isBuyable            → status page (free order)
    *
    * Phone is stripped to digits only to satisfy the backend's ValidPhoneRule.
    * MAX Bridge user fields (first_name, last_name, username) are forwarded
@@ -185,7 +198,7 @@ export const CheckoutDeliveryPage = () => {
     const bridgeUser = getWebApp()?.initDataUnsafe?.user
 
     const payload = {
-      telegram_user_id: getMessengerUserId(),
+      messenger_user_id: getMessengerUserId(),
       shop_id: getShopId(),
       phone: phoneDigits,
       product_id_list: productIdList,
@@ -198,13 +211,43 @@ export const CheckoutDeliveryPage = () => {
     }
 
     try {
-      await buyProduct(payload).unwrap()
+      if (isBuyable) {
+        // ── Paid flow: buyable items → POST /max/market/product/buy ──────────
+        const result = await buyProduct(payload).unwrap()
 
-      // Order placed — clean up checkout state.
-      dispatch(clearCart())
-      clearCheckoutData()
+        dispatch(clearCart())
+        clearCheckoutData()
 
-      navigate(ROUTES.CHECKOUT_SUCCESS, { replace: true })
+        const orderId = result.order_id
+        const redirectURL = result.redirect
+
+        if (redirectURL) {
+          if (redirectURL.includes('yookassa') || redirectURL.includes('cloudpayment')) {
+            sessionStorage.setItem('checkout_payment_url', redirectURL)
+            sessionStorage.setItem('checkout_order_id', String(orderId))
+            navigate(ROUTES.CHECKOUT_PAYMENT, { replace: true })
+            return
+          }
+          // Unknown payment provider — open in the system browser.
+          window.location.href = redirectURL
+          return
+        }
+
+        // No redirect yet — poll until payment is confirmed.
+        navigate(ROUTES.CHECKOUT_PENDING.replace(':orderId', String(orderId)), { replace: true })
+      } else {
+        // ── Free flow: all items non-buyable → POST /market/product/order/create ──
+        const result = await createOrder(payload).unwrap()
+
+        dispatch(clearCart())
+        clearCheckoutData()
+
+        const orderId = result.order_id
+        navigate(
+          ROUTES.CHECKOUT_STATUS.replace(':orderId', String(orderId ?? '')),
+          { replace: true },
+        )
+      }
     } catch (err) {
       // Surface the server error message when available; fallback to generic text.
       const message =

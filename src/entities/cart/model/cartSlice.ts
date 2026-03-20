@@ -8,6 +8,8 @@ export interface CartItem {
   imageFile: string | null
   quantity: number
   cartItemId?: number
+  /** Whether this product can be purchased via a payment system. */
+  buyable?: boolean
 }
 
 /**
@@ -88,6 +90,11 @@ const cartSlice = createSlice({
     clearPromocode(state) {
       state.appliedPromocode = null
     },
+    /** Updates the `buyable` flag for an item — synced from the cart API response. */
+    setBuyable(state, action: PayloadAction<{ productId: number; buyable: boolean }>) {
+      const item = state.items.find((i) => i.productId === action.payload.productId)
+      if (item) item.buyable = action.payload.buyable
+    },
   },
 })
 
@@ -96,6 +103,7 @@ export const {
   removeItem,
   updateQuantity,
   setCartItemId,
+  setBuyable,
   hydrateCart,
   clearCart,
   applyPromocode,

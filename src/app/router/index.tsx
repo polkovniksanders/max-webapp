@@ -8,7 +8,9 @@ import { route as ordersRoute } from '@pages/orders'
 import { route as cartRoute } from '@pages/cart'
 import { route as checkoutContactRoute } from '@pages/checkout-contact'
 import { route as checkoutDeliveryRoute } from '@pages/checkout-delivery'
-import { route as checkoutSuccessRoute } from '@pages/checkout-success'
+import { route as checkoutPaymentRoute } from '@pages/checkout-payment'
+import { route as checkoutPendingRoute } from '@pages/checkout-pending'
+import { route as checkoutStatusRoute } from '@pages/checkout-status'
 import { route as ofertaRoute } from '@pages/oferta'
 import { route as orderDetailRoute } from '@pages/order-detail'
 import { ROUTES } from '@shared/config/routes'
@@ -23,7 +25,9 @@ const pageRoutes = [
   cartRoute,
   checkoutContactRoute,
   checkoutDeliveryRoute,
-  checkoutSuccessRoute,
+  checkoutPaymentRoute,
+  checkoutPendingRoute,
+  checkoutStatusRoute,
   ofertaRoute,
   orderDetailRoute,
 ]

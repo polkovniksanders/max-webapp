@@ -7,6 +7,7 @@ export interface CartApiProduct {
   price: number
   old_price: number | null
   images: Array<{ file: string | null }>
+  buyable: boolean
 }
 
 export interface CartApiItem {

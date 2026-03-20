@@ -11,6 +11,7 @@ import {
 import type { ApiProduct } from '@entities/product'
 import { useGetShopQuery } from '@entities/shop'
 import { CartableProductCard } from '@widgets/cartable-product-card'
+import { BannerSlider } from '@features/banner'
 import {
   CatalogSearchBar,
   CatalogSortButton,
@@ -192,6 +193,10 @@ export const MainPage = () => {
     <div className={styles.page}>
       <ShopHeader shop={shop} onInfoClick={() => navigate(ROUTES.SHOP_DETAIL)} />
 
+      {shop?.banners && shop.banners.length > 0 && (
+        <BannerSlider banners={shop.banners} />
+      )}
+
       {sliderCategories.length > 0 && (
         <div className={styles.categoriesSlider}>
           {sliderCategories.map((cat) => (
@@ -289,6 +294,13 @@ export const MainPage = () => {
               <section key={category.id} className={styles.section}>
                 <div className={styles.sectionHeader}>
                   <span className={styles.sectionTitle}>{category.name}</span>
+                  <button
+                    className={styles.sectionChevron}
+                    onClick={() => dispatch(productFiltersActions.setSelectedCategory({ id: category.id, name: category.name }))}
+                    aria-label={`Все товары — ${category.name}`}
+                  >
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><polyline points="9 18 15 12 9 6"/></svg>
+                  </button>
                 </div>
                 <div className={styles.grid}>
                   {category.products.map((product) => (

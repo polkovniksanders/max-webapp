@@ -1,0 +1,193 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background: #fff;
+  padding-bottom: 88px;
+}
+
+/* ─── Center layout for loading / error states ─────────────────── */
+
+.centerPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100dvh;
+  gap: 16px;
+  padding: 32px 16px;
+}
+
+.loadingText {
+  font-size: 15px;
+  color: #888;
+  margin: 0;
+}
+
+.errorText {
+  font-size: 15px;
+  color: #e53e3e;
+  margin: 0;
+}
+
+/* ─── Header ────────────────────────────────────────────────────── */
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 16px 20px;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.iconWrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: #f5f5f5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 4px;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #1a1a1a;
+  margin: 0;
+}
+
+.statusBadge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  background: #f0f0f0;
+  color: #555;
+}
+
+.statusBadge[data-status='paid'],
+.statusBadge[data-status='completed'],
+.statusBadge[data-status='done'],
+.statusBadge[data-status='confirmed'],
+.statusBadge[data-status='delivered'],
+.statusBadge[data-status='shipped'] {
+  background: #e9f7ef;
+  color: #27ae60;
+}
+
+.statusBadge[data-status='cancelled'],
+.statusBadge[data-status='canceled'] {
+  background: #fdecea;
+  color: #e53e3e;
+}
+
+.date {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+}
+
+/* ─── Items section ─────────────────────────────────────────────── */
+
+.section {
+  padding: 16px;
+}
+
+.sectionTitle {
+  font-size: 13px;
+  font-weight: 600;
+  color: #888;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0 0 12px;
+}
+
+.itemList {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.item {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.itemTitle {
+  flex: 1;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+
+.itemQty {
+  font-size: 14px;
+  color: #aaa;
+  white-space: nowrap;
+}
+
+.itemPrice {
+  font-size: 15px;
+  font-weight: 600;
+  color: #1a1a1a;
+  white-space: nowrap;
+}
+
+/* ─── Total ─────────────────────────────────────────────────────── */
+
+.totalRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 4px;
+}
+
+.totalLabel {
+  font-size: 16px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+
+.totalAmount {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--color-primary, #6b4ce6);
+}
+
+/* ─── Bottom bar ─────────────────────────────────────────────────── */
+
+.bottomBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+
+.homeBtn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--color-primary, #6b4ce6);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.homeBtn:active {
+  opacity: 0.8;
+}

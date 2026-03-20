@@ -15,6 +15,7 @@ export const API_ENDPOINTS = {
 
   // Orders
   PRODUCT_BUY: 'max/market/product/buy',
+  ORDER_CREATE: 'max/market/product/order/create',
   ORDER_SHOW: (id: number) => `max/market/show/order/${id}`,
   ORDERS_HISTORY: (shopId: number) => `max/market/show/orders/history?shop_id=${shopId}`,
 

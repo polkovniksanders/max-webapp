@@ -27,7 +27,7 @@ export interface ApiOrder {
  */
 export interface BuyProductDTO {
   /** MAX / Telegram user ID of the buyer. */
-  telegram_user_id: number
+  messenger_user_id: number
   /** Shop the order belongs to. */
   shop_id: number
   /** Ordered product IDs — one entry per cart item. */
@@ -40,32 +40,76 @@ export interface BuyProductDTO {
   [key: string]: unknown
 }
 
+/**
+ * Response from `max/market/product/buy` (paid flow).
+ *
+ * - `order_id` — always present; identifies the created order.
+ * - `redirect` — present when the shop/product requires payment.
+ *   Contains the full payment provider URL (yookassa, cloudpayment, etc.).
+ */
+export interface BuyProductResponse {
+  order_id: number
+  redirect?: string | null
+}
+
+/**
+ * Payload for the `market/product/order/create` endpoint (free flow).
+ *
+ * Used when none of the cart items have `buyable = true`.
+ * Shape mirrors BuyProductDTO — dynamic delivery fields are spread in via index signature.
+ */
+export interface CreateOrderDTO {
+  messenger_user_id: number
+  shop_id: number
+  product_id_list: number[]
+  phone: string
+  full_name?: string
+  [key: string]: unknown
+}
+
+/** Response from `market/product/order/create`. */
+export interface CreateOrderResponse {
+  order_id?: number
+  redirect?: string | null
+}
 
 export const {
   useGetOrdersHistoryQuery,
   useGetOrderQuery,
   useBuyProductMutation,
+  useCreateOrderMutation,
 } = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     getOrdersHistory: builder.query<ApiOrder[], void>({
       query: () => API_ENDPOINTS.ORDERS_HISTORY(getShopId()),
       transformResponse: (response: { data: ApiOrder[] }) => response.data ?? [],
-      keepUnusedDataFor: 300, // order list: refresh every 5 min
+      keepUnusedDataFor: 300,
     }),
 
     getOrder: builder.query<ApiOrder, number>({
       query: (id) => API_ENDPOINTS.ORDER_SHOW(id),
       transformResponse: (response: { data: ApiOrder }) => response.data,
-      keepUnusedDataFor: 1800, // individual orders are immutable once placed
+      keepUnusedDataFor: 0, // always fetch fresh — status changes over time
     }),
 
-    buyProduct: builder.mutation<ApiOrder, BuyProductDTO>({
+    /** Paid flow — cart contains at least one buyable product. */
+    buyProduct: builder.mutation<BuyProductResponse, BuyProductDTO>({
       query: (body) => ({
         url: API_ENDPOINTS.PRODUCT_BUY,
         method: 'POST',
         body,
       }),
-      transformResponse: (response: { data: ApiOrder }) => response.data,
+      transformResponse: (response: { data: BuyProductResponse }) => response.data,
+    }),
+
+    /** Free flow — all cart items have buyable = false. */
+    createOrder: builder.mutation<CreateOrderResponse, CreateOrderDTO>({
+      query: (body) => ({
+        url: API_ENDPOINTS.ORDER_CREATE,
+        method: 'POST',
+        body,
+      }),
+      transformResponse: (response: { data: CreateOrderResponse }) => response.data,
     }),
   }),
 })

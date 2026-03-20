@@ -1,3 +1,14 @@
+export interface ApiBanner {
+  id: number
+  shop_id: number
+  images: {
+    original: string
+    webp?: string
+  }
+  url: string | null
+  position: number
+}
+
 export interface ApiShopDocument {
   type: string
   title: string
@@ -95,6 +106,6 @@ export interface ApiShop {
   show_ai_chat: boolean
   legal_info: ApiShopLegalInfo | null
   details: ApiShopDetails | null
-  banners: unknown[]
+  banners: ApiBanner[]
   regions: unknown[]
 }

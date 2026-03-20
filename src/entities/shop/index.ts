@@ -1,6 +1,6 @@
 export type { Shop } from './model/types'
 export { default as shopReducer } from './model/shopSlice'
-export type { ApiShop, ApiShopLegalInfo, ApiShopDocument, ShopStyle } from './model/apiTypes'
+export type { ApiShop, ApiShopLegalInfo, ApiShopDocument, ShopStyle, ApiBanner } from './model/apiTypes'
 export {
   useGetShopQuery,
   shopApiSlice,

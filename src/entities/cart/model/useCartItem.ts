@@ -11,6 +11,7 @@ export interface CartProduct {
   price: number
   old_price: number | null
   imageFile: string | null
+  buyable?: boolean
 }
 
 type CartState = { cart: { items: CartItem[] } }
@@ -55,9 +56,12 @@ export const useCartItem = (product: CartProduct) => {
         old_price: product.old_price,
         imageFile: product.imageFile,
         quantity: 1,
+        buyable: product.buyable,
       }),
     )
-    // Fetch cart to get cartItemId assigned by API
+    // Fetch cart to get the server-assigned cartItemId only.
+    // buyable is already set correctly by the addItem dispatch above —
+    // don't override it from the cart API which may return stale/different data.
     const result = await readCart({ shop_id: shopId, messenger_user_id: userId })
     const apiItem = result.data?.find((i) => i.product_id === product.id)
     if (apiItem) {

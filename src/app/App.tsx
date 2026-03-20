@@ -14,7 +14,13 @@ import { getShopId } from '@shared/config/shopId'
 import { getMessengerUserId } from '@shared/config/userId'
 import './styles/index.css'
 
-const ROUTES_WITHOUT_NAVBAR = ['/checkout/contact', '/checkout/delivery', '/checkout/success']
+const ROUTES_WITHOUT_NAVBAR = [
+  '/checkout/contact',
+  '/checkout/delivery',
+  '/checkout/payment',
+  '/checkout/pending',
+  '/checkout/status',
+]
 
 const AppContent = () => {
   useShopStyle()
@@ -22,7 +28,7 @@ const AppContent = () => {
   const dispatch = useDispatch()
   const [fetchCart] = useLazyReadCartQuery()
   const { pathname } = useLocation()
-  const showNavbar = !ROUTES_WITHOUT_NAVBAR.includes(pathname)
+  const showNavbar = !ROUTES_WITHOUT_NAVBAR.some((r) => pathname.startsWith(r))
 
   useEffect(() => {
     const userId = getMessengerUserId()
@@ -36,6 +42,7 @@ const AppContent = () => {
           imageFile: apiItem.product.images?.[0]?.file ?? null,
           quantity: apiItem.quantity,
           cartItemId: apiItem.id,
+          buyable: apiItem.product.buyable,
         }))
         dispatch(hydrateCart(items))
       }

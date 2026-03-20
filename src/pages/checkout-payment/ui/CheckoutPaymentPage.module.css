@@ -1,0 +1,37 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  background: #fff;
+}
+
+.iframe {
+  flex: 1;
+  width: 100%;
+  border: none;
+  display: block;
+}
+
+.bottomBar {
+  flex-shrink: 0;
+  padding: 12px 16px;
+  background: #fff;
+  border-top: 1px solid #f0f0f0;
+}
+
+.paidBtn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 14px;
+  border: none;
+  background: var(--color-primary, #6b4ce6);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.paidBtn:active {
+  opacity: 0.8;
+}

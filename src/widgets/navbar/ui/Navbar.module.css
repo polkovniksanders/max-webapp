@@ -1,8 +1,8 @@
 .navbar {
   display: flex;
   padding: 8px 8px 12px;
-  background: #fff;
-  border-top: 1px solid #e0e0e0;
+  background: var(--bg-layout, #fff);
+  border-top: 1px solid var(--border-color, #e0e0e0);
 }
 
 .link {
@@ -14,7 +14,7 @@
   gap: 3px;
   padding: 6px 8px;
   border-radius: 10px;
-  color: #888;
+  color: var(--color-text-secondary, #888);
   text-decoration: none;
   transition: color 0.15s;
 }

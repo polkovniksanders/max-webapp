@@ -250,6 +250,18 @@
   color: var(--color-text, #000);
 }
 
+/* Section chevron "see all" */
+.sectionChevron {
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  color: var(--color-text-secondary, #888);
+  display: flex;
+  align-items: center;
+  -webkit-tap-highlight-color: transparent;
+}
+
 /* Product grid */
 .grid {
   display: grid;

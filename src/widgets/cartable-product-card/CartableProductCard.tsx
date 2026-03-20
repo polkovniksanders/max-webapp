@@ -1,8 +1,6 @@
-import { useNavigate } from 'react-router-dom'
 import { ProductCard } from '@entities/product'
 import type { ApiProduct } from '@entities/product'
 import { useCartItem } from '@entities/cart'
-import { ROUTES } from '@shared/config/routes'
 
 interface CartableProductCardProps {
   /** The product to render. */
@@ -22,13 +20,13 @@ interface CartableProductCardProps {
  * @param onClick - Handler for tapping the card body.
  */
 export const CartableProductCard = ({ product, onClick }: CartableProductCardProps) => {
-  const navigate = useNavigate()
   const { quantity, isLoading, add, increment, decrement } = useCartItem({
     id: product.id,
     title: product.title,
     price: product.price,
     old_price: product.old_price,
     imageFile: product.images?.[0]?.file ?? null,
+    buyable: product.buyable,
   })
 
   return (
@@ -40,7 +38,6 @@ export const CartableProductCard = ({ product, onClick }: CartableProductCardPro
       onAddToCart={() => add()}
       onIncrement={() => increment()}
       onDecrement={() => decrement()}
-      onCartIconClick={() => navigate(ROUTES.CART)}
     />
   )
 }

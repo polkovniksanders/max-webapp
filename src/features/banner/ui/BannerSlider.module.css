@@ -1,0 +1,72 @@
+.root {
+  position: relative;
+  padding: 12px 16px 0;
+}
+
+/* ── Scroll track ── */
+.track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  gap: 0;
+  border-radius: 16px;
+  /* hide scrollbar */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.track::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Single slide ── */
+.slide {
+  flex: 0 0 100%;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.slide[role='button']:active {
+  opacity: 0.9;
+}
+
+.image {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  object-fit: cover;
+  display: block;
+  border-radius: 16px;
+  user-select: none;
+  pointer-events: none;
+}
+
+/* ── Dot indicators ── */
+.dots {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 8px;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  border: none;
+  padding: 0;
+  background: var(--border-color, #d0d0d0);
+  cursor: pointer;
+  transition: width 0.25s, background 0.25s;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.dotActive {
+  width: 18px;
+  border-radius: 4px;
+  background: var(--color-primary, #976bf6);
+}

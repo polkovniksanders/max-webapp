@@ -335,7 +335,7 @@ export const CartPage = () => {
    * is active; falls back to the sale-price sum otherwise.
    */
   const effectiveTotal = appliedPromocode?.discountedTotal ?? originalTotal
-
+    console.log(items)
   return (
     <div className={styles.page}>
       <PageHeader title="Корзина" />

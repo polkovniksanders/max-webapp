@@ -36,13 +36,13 @@
 .discountBadge {
   position: absolute;
   top: 7px;
-  left: 7px;
-  background: var(--color-error, #e53935);
+  right: 7px;
+  background: var(--color-success, #5eb549);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 6px;
+  padding: 3px 7px;
+  border-radius: 20px;
 }
 
 .body {
@@ -96,8 +96,8 @@
   flex: 1;
   padding: 8px 0;
   border: none;
-  border-radius: var(--radius-small, 20px);
-  background: var(--color-primary, #976BF6);
+  border-radius: 20px;
+  background: var(--color-success, #5eb549);
   color: #fff;
   font-size: 13px;
   font-weight: 600;
@@ -148,7 +148,7 @@
   width: 34px;
   height: 34px;
   border: none;
-  background: var(--color-primary, #976BF6);
+  background: var(--color-success, #5eb549);
   color: #fff;
   font-size: 18px;
   font-weight: 500;

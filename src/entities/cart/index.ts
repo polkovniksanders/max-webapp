@@ -4,6 +4,7 @@ export {
   removeItem,
   updateQuantity,
   setCartItemId,
+  setBuyable,
   hydrateCart,
   clearCart,
   applyPromocode,

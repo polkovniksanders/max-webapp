@@ -3,7 +3,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  min-height: 100dvh;
   padding: 32px 16px;
   background: #fff;
 }
@@ -18,16 +18,25 @@
   text-align: center;
 }
 
-/* Icon container — circular badge matching the success green palette */
-.iconWrap {
+.spinnerWrap {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  background: #e9f7ef;
+  background: #f0ecfd;
   display: flex;
   align-items: center;
   justify-content: center;
   margin-bottom: 4px;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinner {
+  color: var(--color-primary, #6b4ce6);
+  animation: spin 1.2s linear infinite;
 }
 
 .title {
@@ -44,20 +53,26 @@
   margin: 0;
 }
 
-.homeBtn {
-  margin-top: 20px;
+.orderId {
+  font-size: 13px;
+  color: #aaa;
+  margin: 0;
+}
+
+.manualBtn {
+  margin-top: 16px;
   width: 100%;
   padding: 14px;
   border-radius: 14px;
-  border: none;
-  background: var(--color-primary, #6b4ce6);
-  color: #fff;
+  border: 1.5px solid var(--color-primary, #6b4ce6);
+  background: transparent;
+  color: var(--color-primary, #6b4ce6);
   font-size: 16px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s;
 }
 
-.homeBtn:active {
-  opacity: 0.8;
+.manualBtn:active {
+  opacity: 0.7;
 }
