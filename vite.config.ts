@@ -61,9 +61,9 @@ export default defineConfig({
         strictPort: true,
         allowedHosts: ['localhost.berghub.ru'],
     },
-  // В production (сборка для GitHub Pages) используем subpath /max-webapp/
+  // В production/staging (сборка для GitLab Pages) используем subpath /spodialMaxApp/
   // В dev-режиме оставляем /, чтобы dev-сервер работал нормально
-  base: process.env.NODE_ENV === 'production' ? '/max-webapp/' : '/',
+  base: process.env.NODE_ENV === 'production' ? '/spodialMaxApp/' : '/',
   resolve: {
     alias: {
       '@app': resolve(__dirname, 'src/app'),

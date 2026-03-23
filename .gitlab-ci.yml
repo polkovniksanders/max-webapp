@@ -1,0 +1,67 @@
+stages:
+  - build
+  - deploy
+
+.build_template: &build_template
+  stage: build
+  image: node:20-alpine
+  cache:
+    key: ${CI_COMMIT_REF_SLUG}
+    paths:
+      - node_modules/
+  before_script:
+    - npm ci
+  artifacts:
+    paths:
+      - dist/
+    expire_in: 1 hour
+  only:
+    - main
+
+build:staging:
+  <<: *build_template
+  script:
+    - npm run build:dev
+  environment:
+    name: staging
+
+build:production:
+  <<: *build_template
+  script:
+    - npm run build
+  environment:
+    name: production
+  when: manual
+
+pages:staging:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir -p public
+    - cp -r dist/* public/
+  artifacts:
+    paths:
+      - public/
+  environment:
+    name: staging
+  needs:
+    - build:staging
+  only:
+    - main
+
+pages:
+  stage: deploy
+  image: alpine:latest
+  script:
+    - mkdir -p public
+    - cp -r dist/* public/
+  artifacts:
+    paths:
+      - public/
+  environment:
+    name: production
+  needs:
+    - build:production
+  only:
+    - main
+  when: manual
