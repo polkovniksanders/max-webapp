@@ -44,7 +44,9 @@ export interface MaxWebApp {
   disableVerticalSwipes: () => void
 
   // Контакт
-  requestContact: () => Promise<unknown>
+  // Показывает нативный диалог запроса телефона.
+  // Возвращает Promise<{ phone: string }> при согласии, reject при отказе.
+  requestContact: () => Promise<{ phone: string }>
 
   // События
   onEvent: (eventName: string, callback: (...args: unknown[]) => void) => void

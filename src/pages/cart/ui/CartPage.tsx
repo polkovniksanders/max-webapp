@@ -90,7 +90,11 @@ const CartRow = ({ item }: { item: CartItem }) => {
       dispatch(removeItem(item.productId))
       if (item.cartItemId) {
         try {
-          await deleteCart({ id: item.cartItemId, messenger_user_id: userId, shop_id: shopId }).unwrap()
+          await deleteCart({
+            id: item.cartItemId,
+            messenger_user_id: userId,
+            shop_id: shopId,
+          }).unwrap()
         } catch {
           dispatch(addItem(item))
           toast.error('Не удалось удалить товар')
@@ -118,7 +122,11 @@ const CartRow = ({ item }: { item: CartItem }) => {
     dispatch(removeItem(item.productId))
     if (item.cartItemId) {
       try {
-        await deleteCart({ id: item.cartItemId, messenger_user_id: userId, shop_id: shopId }).unwrap()
+        await deleteCart({
+          id: item.cartItemId,
+          messenger_user_id: userId,
+          shop_id: shopId,
+        }).unwrap()
       } catch {
         dispatch(addItem(item))
         toast.error('Не удалось удалить товар')
@@ -150,13 +158,9 @@ const CartRow = ({ item }: { item: CartItem }) => {
             <span className={styles.qtyText}>{qtyLabel}</span>
             <div className={styles.priceBlock}>
               {hasOldPrice && (
-                <span className={styles.oldPrice}>
-                  {item.old_price!.toLocaleString('ru-RU')} ₽
-                </span>
+                <span className={styles.oldPrice}>{item.old_price!.toLocaleString('ru-RU')} ₽</span>
               )}
-              <span className={styles.price}>
-                {item.price.toLocaleString('ru-RU')} ₽
-              </span>
+              <span className={styles.price}>{item.price.toLocaleString('ru-RU')} ₽</span>
             </div>
           </div>
         </div>
@@ -186,9 +190,7 @@ const CartRow = ({ item }: { item: CartItem }) => {
             <span>−</span>
           </button>
 
-          <span className={styles.stepperCount}>
-            {isLoading ? '·' : item.quantity}
-          </span>
+          <span className={styles.stepperCount}>{isLoading ? '·' : item.quantity}</span>
 
           <button
             className={styles.stepperBtn}
@@ -274,9 +276,7 @@ const InvoiceSection = ({
       {/* Row 4: Итого — always visible, larger + bolder */}
       <div className={`${styles.invoiceRow} ${styles.invoiceTotalRow}`}>
         <span className={styles.invoiceTotalLabel}>Итого</span>
-        <span className={styles.invoiceTotalValue}>
-          {effectiveTotal.toLocaleString('ru-RU')} ₽
-        </span>
+        <span className={styles.invoiceTotalValue}>{effectiveTotal.toLocaleString('ru-RU')} ₽</span>
       </div>
     </div>
   )
@@ -317,7 +317,7 @@ export const CartPage = () => {
    */
   const oldPriceTotal = items.reduce(
     (acc, item) => acc + (item.old_price ?? item.price) * item.quantity,
-    0,
+    0
   )
 
   /** Positive value means a per-product discount is in play. */
@@ -335,7 +335,7 @@ export const CartPage = () => {
    * is active; falls back to the sale-price sum otherwise.
    */
   const effectiveTotal = appliedPromocode?.discountedTotal ?? originalTotal
-    console.log(items)
+
   return (
     <div className={styles.page}>
       <PageHeader title="Корзина" />

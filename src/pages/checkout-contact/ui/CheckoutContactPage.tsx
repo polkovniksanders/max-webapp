@@ -6,6 +6,7 @@ import { PageHeader } from '@shared/ui'
 import { useBackButton } from '@shared/hooks/useBackButton'
 import { ROUTES } from '@shared/config/routes'
 import { saveContactData, loadContactData } from '@features/checkout'
+import { getWebApp } from '@shared/bridge'
 import styles from './CheckoutContactPage.module.css'
 
 /**
@@ -18,10 +19,9 @@ import styles from './CheckoutContactPage.module.css'
 function formatPhone(raw: string): string {
   const digits = raw.replace(/\D/g, '')
   // Normalise country code: treat leading 8 as 7, prepend 7 if absent.
-  const d =
-    digits.startsWith('7')
-      ? digits
-      : digits.startsWith('8')
+  const d = digits.startsWith('7')
+    ? digits
+    : digits.startsWith('8')
       ? '7' + digits.slice(1)
       : '7' + digits
   const s = d.slice(0, 11)
@@ -41,10 +41,7 @@ const schema = z.object({
   phone: z
     .string()
     .min(1, 'Введите номер телефона')
-    .refine(
-      (v) => v.replace(/\D/g, '').length === 11,
-      'Введите полный номер телефона',
-    ),
+    .refine((v) => v.replace(/\D/g, '').length === 11, 'Введите полный номер телефона'),
   ofertaAccepted: z.literal(true, {
     error: 'Необходимо согласиться с условиями оферты',
   }),
@@ -69,6 +66,7 @@ export const CheckoutContactPage = () => {
     control,
     register,
     handleSubmit,
+    setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -79,22 +77,31 @@ export const CheckoutContactPage = () => {
     },
   })
 
+  const handleRequestContact = () => {
+    const webApp = getWebApp()
+    if (!webApp) return
+    webApp
+      .requestContact()
+      .then((result) => {
+        if (result && typeof result === 'object') {
+          const phone = (result as Record<string, unknown>).phone
+          if (typeof phone === 'string' && phone.length > 0) {
+            setValue('phone', formatPhone(phone), { shouldValidate: true })
+          }
+        }
+      })
+      .catch(() => {})
+  }
+
   const onSubmit = (data: FormValues) => {
     saveContactData({ phone: data.phone, ofertaAccepted: data.ofertaAccepted })
     navigate(ROUTES.CHECKOUT_DELIVERY)
   }
-
   return (
     <div className={styles.page}>
       <PageHeader title="Контактные данные" />
 
-      <form
-        id="contact-form"
-        className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
-        {/* Phone field with manual mask via Controller */}
+      <form id="contact-form" className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
         <div className={styles.field}>
           <label className={styles.label} htmlFor="phone">
             Номер телефона
@@ -122,6 +129,15 @@ export const CheckoutContactPage = () => {
             <span className={styles.error} role="alert">
               {errors.phone.message}
             </span>
+          )}
+          {getWebApp() && (
+            <button
+              type="button"
+              className={styles.requestContactBtn}
+              onClick={handleRequestContact}
+            >
+              Использовать номер из MAX
+            </button>
           )}
         </div>
 

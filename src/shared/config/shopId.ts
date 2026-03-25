@@ -15,5 +15,5 @@ export const getShopId = (): number => {
     if (!isNaN(id)) return id
   }
 
-  return 369 // default fallback
+  return 377 // default fallback
 }

@@ -134,7 +134,7 @@ export const CheckoutDeliveryPage = () => {
   // Derive checkout config — memoised so schema/defaultValues are stable.
   const config = useMemo(
     () => resolveConfig(shop?.details?.checkout_config),
-    [shop?.details?.checkout_config],
+    [shop?.details?.checkout_config]
   )
 
   const schema = useMemo(() => buildDynamicSchema(config), [config])
@@ -202,11 +202,10 @@ export const CheckoutDeliveryPage = () => {
       shop_id: getShopId(),
       phone: phoneDigits,
       product_id_list: productIdList,
-      // Optional identity fields from MAX Bridge.
       first_name: bridgeUser?.first_name,
       last_name: bridgeUser?.last_name,
       username: bridgeUser?.username,
-      // All dynamic delivery form values (full_name, email, comment, etc.) are spread here.
+      delivery_type: 2,
       ...data,
     }
 
@@ -243,10 +242,9 @@ export const CheckoutDeliveryPage = () => {
         clearCheckoutData()
 
         const orderId = result.order_id
-        navigate(
-          ROUTES.CHECKOUT_STATUS.replace(':orderId', String(orderId ?? '')),
-          { replace: true },
-        )
+        navigate(ROUTES.CHECKOUT_STATUS.replace(':orderId', String(orderId ?? '')), {
+          replace: true,
+        })
       }
     } catch (err) {
       // Surface the server error message when available; fallback to generic text.
@@ -270,22 +268,13 @@ export const CheckoutDeliveryPage = () => {
     <div className={styles.page}>
       <PageHeader title={config.checkoutPage.title ?? 'Доставка'} />
 
-      <form
-        id="delivery-form"
-        className={styles.form}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      >
+      <form id="delivery-form" className={styles.form} onSubmit={handleSubmit(onSubmit)} noValidate>
         {config.checkoutPage.fields.map((field) => (
           <DynamicField
             key={field.name}
             field={field}
             register={register}
-            error={
-              errors[field.name]?.message
-                ? String(errors[field.name]!.message)
-                : undefined
-            }
+            error={errors[field.name]?.message ? String(errors[field.name]!.message) : undefined}
           />
         ))}
       </form>
